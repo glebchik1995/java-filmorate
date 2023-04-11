@@ -25,11 +25,3 @@ public class ExceptionsHandler {
         );
     }
 }
-
-class ErrorResponse {
-    private final String exception;
-
-    public ErrorResponse(String exception) {
-        this.exception = exception;
-    }
-}
