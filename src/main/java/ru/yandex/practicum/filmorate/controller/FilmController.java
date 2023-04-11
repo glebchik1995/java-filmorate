@@ -16,7 +16,7 @@ import java.util.Map;
 @RequestMapping("/films")
 public class FilmController {
 
-    private final LocalDate DATE_NO_LATTER = LocalDate.of(1895, 12, 28);
+    private final LocalDate date = LocalDate.of(1895, 12, 28);
 
     protected final Map<Integer, Film> films = new HashMap<>();
 
@@ -54,7 +54,7 @@ public class FilmController {
     }
 
     public void validate(Film film) {
-        if (film.getReleaseDate().isBefore(DATE_NO_LATTER)) {
+        if (film.getReleaseDate().isBefore(date)) {
             throw new ValidationException("Дата релиза не может быть раньше 28.12.1895");
         }
         if (film.getDescription().length() < 1 || film.getDescription().length() > 200) {
