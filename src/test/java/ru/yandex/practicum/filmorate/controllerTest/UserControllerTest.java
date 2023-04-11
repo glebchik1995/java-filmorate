@@ -1,9 +1,5 @@
 package ru.yandex.practicum.filmorate.controllerTest;
 
-
-import jakarta.validation.Validation;
-import jakarta.validation.Validator;
-import jakarta.validation.ValidatorFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ru.yandex.practicum.filmorate.controller.UserController;
@@ -22,14 +18,10 @@ public class UserControllerTest {
     private User user;
     private UserController userController;
 
-    private Validator validator;
-
     @BeforeEach
     public void beforeEach() {
         userController = new UserController();
         users = new HashMap<>();
-        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-        validator = factory.getValidator();
         user = User.builder()
                 .id(1)
                 .email("gleb.verbickiy@yandex.ru")

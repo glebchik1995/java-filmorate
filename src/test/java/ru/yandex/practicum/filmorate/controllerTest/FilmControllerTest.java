@@ -27,7 +27,7 @@ public class FilmControllerTest {
                 .name("Американский пирог")
                 .description("Комедия")
                 .duration(95)
-                .releaseDate(LocalDate.of(1999, 1, 10))
+                .releaseDate(LocalDate.of(	1999, 1, 10))
                 .build();
     }
 
@@ -44,7 +44,7 @@ public class FilmControllerTest {
                     film.setName("");
                     filmController.createFilm(film);
                 });
-        assertEquals(0, filmController.getAllFilm().size(), "Список фильмов пуст");
+        assertEquals(0, filmController.getAllFilm().size(),"Список фильмов пуст");
     }
 
     @Test
@@ -56,7 +56,7 @@ public class FilmControllerTest {
                     filmController.createFilm(film);
                 });
         assertEquals("Количество символов должно быть больше 0 и не превышать 200", exception.getMessage());
-        assertEquals(0, filmController.getAllFilm().size(), "Список фильмов пуст");
+        assertEquals(0, filmController.getAllFilm().size(),"Список фильмов пуст");
 
     }
 
@@ -81,7 +81,7 @@ public class FilmControllerTest {
                     filmController.createFilm(film);
                 });
         assertEquals("Количество символов должно быть больше 0 и не превышать 200", exception.getMessage());
-        assertEquals(0, filmController.getAllFilm().size(), "Список фильмов пуст");
+        assertEquals(0, filmController.getAllFilm().size(),"Список фильмов пуст");
 
     }
 
@@ -94,7 +94,7 @@ public class FilmControllerTest {
                     filmController.createFilm(film);
                 });
         assertEquals("Продолжительность не может быть отрицательной", exception.getMessage());
-        assertEquals(0, filmController.getAllFilm().size(), "Список фильмов пуст");
+        assertEquals(0, filmController.getAllFilm().size(),"Список фильмов пуст");
 
     }
 
