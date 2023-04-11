@@ -11,7 +11,7 @@ import ru.yandex.practicum.filmorate.exception.ValidationException;
 public class ExceptionsHandler {
     @ExceptionHandler
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ErrorResponse handleUserNotFoundException(final NotFoundException exception) {
+    public ErrorResponse handleNotFoundException(final NotFoundException exception) {
         return new ErrorResponse(
                 exception.getMessage()
         );
