@@ -1,18 +1,20 @@
 package ru.yandex.practicum.filmorate.model;
 
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
-@Data
+@Getter
+@Setter
 @Builder(toBuilder = true)
 public class User {
-
-    private int id;
+    @NotNull
+    private long id;
 
     @NotBlank(message = "Поле с email должно быть заполнено")
     @Email(message = "Поле с email должно содержать @")

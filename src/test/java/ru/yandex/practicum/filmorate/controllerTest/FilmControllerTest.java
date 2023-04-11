@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class FilmControllerTest {
-    private Map<Integer, Film> films;
+    private Map<Long, Film> films;
     Film film;
     FilmController filmController;
 
@@ -38,11 +38,12 @@ public class FilmControllerTest {
 
     @Test
     public void shouldNoCreateFilmWhenNameIsEmpty() {
-        assertThrows(ValidationException.class,
+        final ValidationException exception = assertThrows(ValidationException.class,
                 () -> {
                     film.setName("");
                     filmController.createFilm(film);
                 });
+        assertEquals("Поле с названием фильма должно быть заполнено", exception.getMessage());
         assertEquals(0, filmController.getAllFilm().size(),"Список фильмов пуст");
     }
 

@@ -1,7 +1,8 @@
 package ru.yandex.practicum.filmorate.model;
 
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -9,11 +10,12 @@ import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
 
-@Data
+@Getter
+@Setter
 @Builder(toBuilder = true)
 public class Film {
-
-    private int id;
+    @NotNull
+    private long id;
 
     @NotBlank(message = "Поле с названием фильма должно быть заполнено")
     private String name;

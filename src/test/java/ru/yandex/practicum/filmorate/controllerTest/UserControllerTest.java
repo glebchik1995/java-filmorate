@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class UserControllerTest {
-    private Map<Integer, User> users;
+    private Map<Long, User> users;
     private User user;
     private UserController userController;
 

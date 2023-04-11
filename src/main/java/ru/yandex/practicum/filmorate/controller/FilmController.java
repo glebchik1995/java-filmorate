@@ -2,6 +2,7 @@ package ru.yandex.practicum.filmorate.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 
@@ -16,9 +17,7 @@ import java.util.Map;
 @RequestMapping("/films")
 public class FilmController {
 
-    private final LocalDate date = LocalDate.of(1895, 12, 28);
-
-    protected final Map<Integer, Film> films = new HashMap<>();
+    protected final Map<Long, Film> films = new HashMap<>();
 
     private int idGenerator = 0;
 
@@ -39,7 +38,7 @@ public class FilmController {
     public Film updateFilm(@Valid @RequestBody Film film) {
         validate(film);
         if (!films.containsKey(film.getId())) {
-            throw new ValidationException("Фильм не найден");
+            throw new NotFoundException("Фильм не найден");
         }
         films.put(film.getId(), film);
         log.info("Фильм {} успешно обновлен", film);
@@ -54,7 +53,7 @@ public class FilmController {
     }
 
     public void validate(Film film) {
-        if (film.getReleaseDate().isBefore(date)) {
+        if (film.getReleaseDate().isBefore(LocalDate.of(1895, 12, 28))) {
             throw new ValidationException("Дата релиза не может быть раньше 28.12.1895");
         }
         if (film.getDescription().length() < 1 || film.getDescription().length() > 200) {
