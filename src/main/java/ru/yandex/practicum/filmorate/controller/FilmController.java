@@ -16,7 +16,7 @@ import java.util.Map;
 @RequestMapping("/films")
 public class FilmController {
 
-    private final static LocalDate DATE_NO_LATTER = LocalDate.of(1895, 12, 28);
+    private final LocalDate DATE_NO_LATTER = LocalDate.of(1895, 12, 28);
 
     protected final Map<Integer, Film> films = new HashMap<>();
 
@@ -63,7 +63,7 @@ public class FilmController {
         if (film.getDuration() < 0) {
             throw new ValidationException("Продолжительность не может быть отрицательной");
         }
-        if(film.getName().isEmpty() || film.getName().isBlank()){
+        if (film.getName().isEmpty() || film.getName().isBlank()) {
             throw new ValidationException("Поле с названием фильма должно быть заполнено");
         }
     }

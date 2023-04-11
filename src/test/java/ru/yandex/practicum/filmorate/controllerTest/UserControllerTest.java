@@ -64,7 +64,7 @@ public class UserControllerTest {
     @Test
     public void shouldAddOneUser() {
         users.put(user.getId(), user);
-        assertEquals(1, users.size(),"Пользователь успешно добавлен");
+        assertEquals(1, users.size(), "Пользователь успешно добавлен");
     }
 
     @Test
@@ -88,7 +88,7 @@ public class UserControllerTest {
                     userController.createUser(user);
                 });
         assertEquals("Поле с логином некорректно заполнено", exception.getMessage());
-        assertEquals(0, userController.getAllUsers().size(),"Количество пользователей в списке = 0");
+        assertEquals(0, userController.getAllUsers().size(), "Количество пользователей в списке = 0");
     }
 
 }
