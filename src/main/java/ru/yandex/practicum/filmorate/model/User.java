@@ -13,7 +13,7 @@ import java.time.LocalDate;
 @Setter
 @Builder(toBuilder = true)
 public class User {
-    @NotNull
+    @NotNull(message = "Нумерация начинается с единицы")
     private long id;
 
     @NotBlank(message = "Поле с email должно быть заполнено")

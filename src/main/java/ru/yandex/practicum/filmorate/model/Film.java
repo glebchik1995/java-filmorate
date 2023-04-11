@@ -14,7 +14,7 @@ import java.time.LocalDate;
 @Setter
 @Builder(toBuilder = true)
 public class Film {
-    @NotNull
+    @NotNull(message = "Нумерация начинается с единицы")
     private long id;
 
     @NotBlank(message = "Поле с названием фильма должно быть заполнено")
