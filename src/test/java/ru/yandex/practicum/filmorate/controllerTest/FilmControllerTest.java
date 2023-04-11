@@ -27,7 +27,7 @@ public class FilmControllerTest {
                 .name("Американский пирог")
                 .description("Комедия")
                 .duration(95)
-                .releaseDate(LocalDate.of(	1999, 1, 10))
+                .releaseDate(LocalDate.of(1999, 1, 10))
                 .build();
     }
 
