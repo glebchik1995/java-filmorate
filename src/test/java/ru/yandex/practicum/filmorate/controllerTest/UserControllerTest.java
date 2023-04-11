@@ -23,7 +23,6 @@ public class UserControllerTest {
         userController = new UserController();
         users = new HashMap<>();
         user = User.builder()
-                .id(1)
                 .email("gleb.verbickiy@yandex.ru")
                 .login("glebchik_95")
                 .name("Gleb")

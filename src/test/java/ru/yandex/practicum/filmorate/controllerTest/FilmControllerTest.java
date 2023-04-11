@@ -23,7 +23,6 @@ public class FilmControllerTest {
         filmController = new FilmController();
         films = new HashMap<>();
         film = Film.builder()
-                .id(1)
                 .name("Американский пирог")
                 .description("Комедия")
                 .duration(95)
