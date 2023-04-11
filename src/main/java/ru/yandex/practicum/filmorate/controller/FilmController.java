@@ -27,12 +27,11 @@ public class FilmController {
     }
 
     @PostMapping
-    public Film createFilm(@Valid @RequestBody Film film) {
+    public void createFilm(@Valid @RequestBody Film film) {
         validate(film);
         film.setId(idPlus());
         films.put(film.getId(), film);
         log.info("Фильм {} успешно добавлен ", film);
-        return film;
     }
 
     @PutMapping
