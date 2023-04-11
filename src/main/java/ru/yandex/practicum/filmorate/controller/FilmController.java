@@ -23,15 +23,16 @@ public class FilmController {
     private int idGenerator = 0;
 
     private int idPlus() {
-        return idGenerator++;
+        return ++idGenerator;
     }
 
     @PostMapping
-    public void createFilm(@Valid @RequestBody Film film) {
+    public Film createFilm(@Valid @RequestBody Film film) {
         validate(film);
         film.setId(idPlus());
         films.put(film.getId(), film);
         log.info("Фильм {} успешно добавлен ", film);
+        return film;
     }
 
     @PutMapping

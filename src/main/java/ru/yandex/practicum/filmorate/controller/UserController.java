@@ -17,15 +17,16 @@ public class UserController {
     private int idGenerator = 0;
 
     private int idPlus() {
-        return idGenerator++;
+        return ++idGenerator;
     }
 
     @PostMapping
-    public void createUser(@Valid @RequestBody User user) {
+    public User createUser(@Valid @RequestBody User user) {
         validate(user);
         user.setId(idPlus());
         users.put(user.getId(), user);
         log.info("Пользователь {} успешно добавлен", user);
+        return user;
     }
 
     @PutMapping
