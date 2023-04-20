@@ -44,7 +44,7 @@ public class FilmControllerTest {
                     filmController.createFilm(film);
                 });
         assertEquals("Поле с названием фильма должно быть заполнено", exception.getMessage());
-        assertEquals(0, filmController.getAllFilm().size(),"Список фильмов пуст");
+        assertEquals(0, filmController.getAllFilms().size(),"Список фильмов пуст");
     }
 
     @Test
@@ -56,7 +56,7 @@ public class FilmControllerTest {
                     filmController.createFilm(film);
                 });
         assertEquals("Количество символов должно быть больше 0 и не превышать 200", exception.getMessage());
-        assertEquals(0, filmController.getAllFilm().size(),"Список фильмов пуст");
+        assertEquals(0, filmController.getAllFilms().size(),"Список фильмов пуст");
 
     }
 
@@ -81,7 +81,7 @@ public class FilmControllerTest {
                     filmController.createFilm(film);
                 });
         assertEquals("Количество символов должно быть больше 0 и не превышать 200", exception.getMessage());
-        assertEquals(0, filmController.getAllFilm().size(),"Список фильмов пуст");
+        assertEquals(0, filmController.getAllFilms().size(),"Список фильмов пуст");
 
     }
 
@@ -94,7 +94,7 @@ public class FilmControllerTest {
                     filmController.createFilm(film);
                 });
         assertEquals("Продолжительность не может быть отрицательной", exception.getMessage());
-        assertEquals(0, filmController.getAllFilm().size(),"Список фильмов пуст");
+        assertEquals(0, filmController.getAllFilms().size(),"Список фильмов пуст");
 
     }
 

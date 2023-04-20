@@ -46,7 +46,7 @@ public class FilmController {
     }
 
     @GetMapping
-    public Collection<Film> getAllFilm() {
+    public Collection<Film> getAllFilms() {
         log.info("На текущий момент " + LocalDate.now() +
                 " количество фильмов в списке составляет: " + films.size());
         return films.values();
