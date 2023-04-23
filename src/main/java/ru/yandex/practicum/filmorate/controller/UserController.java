@@ -68,11 +68,6 @@ public class UserController {
         userService.addFriend(id, friendId);
     }
 
-    @DeleteMapping("/{id}")
-    public User deleteUser(@PathVariable Long id) {
-        return userStorage.deleteUser(id);
-    }
-
     @DeleteMapping("/{id}/friends/{friendId}")
     public void deleteFriend(@PathVariable Long id, @PathVariable Long friendId) {
         userService.deleteFriend(id, friendId);

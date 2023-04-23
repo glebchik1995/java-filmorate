@@ -87,11 +87,5 @@ public class UserControllerTest {
         assertEquals(0, userController.getAllUsers().size(), "Количество пользователей в списке = 0");
     }
 
-    @Test
-    public void shouldDeleteUser() {
-        userController.createUser(user);
-        userController.deleteUser(user.getId());
-        assertEquals(0, userController.getAllUsers().size(), "Количество пользователей в списке = 0");
-    }
 
 }
