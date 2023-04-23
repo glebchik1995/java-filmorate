@@ -22,6 +22,7 @@ public class ErrorHandler {
     public ErrorResponse handleFilmNotFoundException(final FilmNotFoundException e) {
         return new ErrorResponse("Искомый фильм не найден", e.getMessage());
     }
+
     @ExceptionHandler
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorResponse handleUserNotFoundException(final UserNotFoundException e) {
