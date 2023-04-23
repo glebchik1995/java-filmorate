@@ -23,8 +23,8 @@ public class FilmControllerTest {
         filmController = new FilmController();
         films = new HashMap<>();
         film = Film.builder()
-                .name("РђРјРµСЂРёРєР°РЅСЃРєРёР№ РїРёСЂРѕРі")
-                .description("РљРѕРјРµРґРёСЏ")
+                .name("Американский пирог")
+                .description("Комедия")
                 .duration(95)
                 .releaseDate(LocalDate.of(1999, 1, 10))
                 .build();
@@ -33,7 +33,7 @@ public class FilmControllerTest {
     @Test
     public void shouldAddOneFilm() {
         films.put(film.getId(), film);
-        assertEquals(1, films.size(), "Р’ СЃРїРёСЃРѕРє РґРѕР±Р°РІР»РµРЅ С„РёР»СЊРј");
+        assertEquals(1, films.size(), "В список добавлен фильм");
     }
 
     @Test
@@ -43,8 +43,8 @@ public class FilmControllerTest {
                     film.setName("");
                     filmController.createFilm(film);
                 });
-        assertEquals("РџРѕР»Рµ СЃ РЅР°Р·РІР°РЅРёРµРј С„РёР»СЊРјР° РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ Р·Р°РїРѕР»РЅРµРЅРѕ", exception.getMessage());
-        assertEquals(0, filmController.getAllFilms().size(),"РЎРїРёСЃРѕРє С„РёР»СЊРјРѕРІ РїСѓСЃС‚");
+        assertEquals("Поле с названием фильма должно быть заполнено", exception.getMessage());
+        assertEquals(0, filmController.getAllFilms().size(),"Список фильмов пуст");
     }
 
     @Test
@@ -55,8 +55,8 @@ public class FilmControllerTest {
                     film.setDescription("");
                     filmController.createFilm(film);
                 });
-        assertEquals("РљРѕР»РёС‡РµСЃС‚РІРѕ СЃРёРјРІРѕР»РѕРІ РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ Р±РѕР»СЊС€Рµ 0 Рё РЅРµ РїСЂРµРІС‹С€Р°С‚СЊ 200", exception.getMessage());
-        assertEquals(0, filmController.getAllFilms().size(),"РЎРїРёСЃРѕРє С„РёР»СЊРјРѕРІ РїСѓСЃС‚");
+        assertEquals("Количество символов должно быть больше 0 и не превышать 200", exception.getMessage());
+        assertEquals(0, filmController.getAllFilms().size(),"Список фильмов пуст");
 
     }
 
@@ -69,7 +69,7 @@ public class FilmControllerTest {
                     film.setReleaseDate(LocalDate.of(1800, 3, 3));
                     filmController.createFilm(film);
                 });
-        assertEquals("Р”Р°С‚Р° СЂРµР»РёР·Р° РЅРµ РјРѕР¶РµС‚ Р±С‹С‚СЊ СЂР°РЅСЊС€Рµ 28.12.1895", exception.getMessage());
+        assertEquals("Дата релиза не может быть раньше 28.12.1895", exception.getMessage());
     }
 
     @Test
@@ -77,11 +77,11 @@ public class FilmControllerTest {
 
         final ValidationException exception = assertThrows(ValidationException.class,
                 () -> {
-                    film.setDescription("СЋ".repeat(202));
+                    film.setDescription("ю".repeat(202));
                     filmController.createFilm(film);
                 });
-        assertEquals("РљРѕР»РёС‡РµСЃС‚РІРѕ СЃРёРјРІРѕР»РѕРІ РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ Р±РѕР»СЊС€Рµ 0 Рё РЅРµ РїСЂРµРІС‹С€Р°С‚СЊ 200", exception.getMessage());
-        assertEquals(0, filmController.getAllFilms().size(),"РЎРїРёСЃРѕРє С„РёР»СЊРјРѕРІ РїСѓСЃС‚");
+        assertEquals("Количество символов должно быть больше 0 и не превышать 200", exception.getMessage());
+        assertEquals(0, filmController.getAllFilms().size(),"Список фильмов пуст");
 
     }
 
@@ -93,8 +93,8 @@ public class FilmControllerTest {
                     film.setDuration(-1);
                     filmController.createFilm(film);
                 });
-        assertEquals("РџСЂРѕРґРѕР»Р¶РёС‚РµР»СЊРЅРѕСЃС‚СЊ РЅРµ РјРѕР¶РµС‚ Р±С‹С‚СЊ РѕС‚СЂРёС†Р°С‚РµР»СЊРЅРѕР№", exception.getMessage());
-        assertEquals(0, filmController.getAllFilms().size(),"РЎРїРёСЃРѕРє С„РёР»СЊРјРѕРІ РїСѓСЃС‚");
+        assertEquals("Продолжительность не может быть отрицательной", exception.getMessage());
+        assertEquals(0, filmController.getAllFilms().size(),"Список фильмов пуст");
 
     }
 
