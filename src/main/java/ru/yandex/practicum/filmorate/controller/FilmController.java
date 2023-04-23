@@ -25,6 +25,10 @@ public class FilmController {
         this.filmStorage = filmStorage;
     }
 
+    public FilmController() {
+
+    }
+
     @PostMapping
     public Film createFilm(@Valid @RequestBody Film film) {
         log.info("Фильм {} успешно добавлен ", film);

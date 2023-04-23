@@ -25,6 +25,10 @@ public class UserController {
         this.userService = userService;
     }
 
+    public UserController() {
+
+    }
+
     @PostMapping
     public User createUser(@Valid @RequestBody User user) {
         log.info("Пользователь {} успешно добавлен", user);
