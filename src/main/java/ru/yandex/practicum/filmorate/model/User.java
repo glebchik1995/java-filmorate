@@ -27,7 +27,9 @@ public class User {
     private String login;
 
     private String name;
+
     @NotNull(message = "ѕоле с датой рождени€ должно быть заполнено")
     private LocalDate birthday;
+
     private final Set<Long> friends = new HashSet<>();
 }

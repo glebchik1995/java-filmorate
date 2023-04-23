@@ -28,7 +28,9 @@ public class Film {
 
     @NotNull(message = "ѕоле дата релиза должно быть заполнено")
     private LocalDate releaseDate;
+
     @Positive(message = "ѕродолжительность не может быть отрицательной")
     private int duration;
+
     private final Set<Long> likes = new HashSet<>();
 }

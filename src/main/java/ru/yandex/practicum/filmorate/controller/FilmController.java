@@ -1,6 +1,7 @@
 package ru.yandex.practicum.filmorate.controller;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.service.FilmService;
@@ -17,7 +18,7 @@ public class FilmController {
 
     private FilmService filmService;
     private FilmStorage filmStorage;
-
+    @Autowired
     public FilmController(FilmService filmService, FilmStorage filmStorage) {
         this.filmService = filmService;
         this.filmStorage = filmStorage;
@@ -51,6 +52,7 @@ public class FilmController {
     public List<Film> getPopular(@RequestParam(name = "count", defaultValue = "10") Integer count) {
         return filmService.getPopular(count);
     }
+
     @PutMapping("/{id}/like/{userId}")
     public void addLike(@PathVariable Long id, @PathVariable Long userId) {
         filmService.putLike(id, userId);
