@@ -15,20 +15,20 @@ import java.util.Set;
 @Setter
 @Builder(toBuilder = true)
 public class User {
-    @NotNull(message = "Нумерация начинается с единицы")
+    @NotNull(message = "РќСѓРјРµСЂР°С†РёСЏ РЅР°С‡РёРЅР°РµС‚СЃСЏ СЃ РµРґРёРЅРёС†С‹")
     private long id;
 
-    @NotBlank(message = "Поле с email должно быть заполнено")
-    @Email(message = "Поле с email должно содержать @")
+    @NotBlank(message = "РџРѕР»Рµ СЃ email РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ Р·Р°РїРѕР»РЅРµРЅРѕ")
+    @Email(message = "РџРѕР»Рµ СЃ email РґРѕР»Р¶РЅРѕ СЃРѕРґРµСЂР¶Р°С‚СЊ @")
     private String email;
 
-    @NotNull(message = "Поле с логином должно быть заполнено")
-    @NotBlank(message = "Поле с логином не должно содержать пробелы")
+    @NotNull(message = "РџРѕР»Рµ СЃ Р»РѕРіРёРЅРѕРј РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ Р·Р°РїРѕР»РЅРµРЅРѕ")
+    @NotBlank(message = "РџРѕР»Рµ СЃ Р»РѕРіРёРЅРѕРј РЅРµ РґРѕР»Р¶РЅРѕ СЃРѕРґРµСЂР¶Р°С‚СЊ РїСЂРѕР±РµР»С‹")
     private String login;
 
     private String name;
 
-    @NotNull(message = "Поле с датой рождения должно быть заполнено")
+    @NotNull(message = "РџРѕР»Рµ СЃ РґР°С‚РѕР№ СЂРѕР¶РґРµРЅРёСЏ РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ Р·Р°РїРѕР»РЅРµРЅРѕ")
     private LocalDate birthday;
 
     private final Set<Long> friends = new HashSet<>();

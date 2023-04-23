@@ -27,7 +27,7 @@ public class FilmService {
 
     public List<Film> getPopular(Integer count) {
         if (count < 1) {
-           throw new ValidationException("Êîëè÷åñòâî ôèëüìîâ äëÿ âûâîäà íå äîëæíî áûòü ìåíüøå 1");
+           throw new ValidationException("ÐšÐ¾Ð»Ð¸Ñ‡ÐµÑÑ‚Ð²Ð¾ Ñ„Ð¸Ð»ÑŒÐ¼Ð¾Ð² Ð´Ð»Ñ Ð²Ñ‹Ð²Ð¾Ð´Ð° Ð½Ðµ Ð´Ð¾Ð»Ð¶Ð½Ð¾ Ð±Ñ‹Ñ‚ÑŒ Ð¼ÐµÐ½ÑŒÑˆÐµ 1");
         }
 
         return filmStorage
@@ -43,10 +43,10 @@ public class FilmService {
             if (userStorage.getUserById(userId) != null) {
                 filmStorage.getFilmById(filmId).getLikes().add(userId);
             } else {
-                throw new UserNotFoundException("Ïîëüçîâàòåëü c ID=" + userId + " íå íàéäåí!");
+                throw new UserNotFoundException("ÐŸÐ¾Ð»ÑŒÐ·Ð¾Ð²Ð°Ñ‚ÐµÐ»ÑŒ c ID=" + userId + " Ð½Ðµ Ð½Ð°Ð¹Ð´ÐµÐ½!");
             }
         } else {
-            throw new FilmNotFoundException("Ôèëüì c ID=" + filmId + " íå íàéäåí!");
+            throw new FilmNotFoundException("Ð¤Ð¸Ð»ÑŒÐ¼ c ID=" + filmId + " Ð½Ðµ Ð½Ð°Ð¹Ð´ÐµÐ½!");
         }
     }
 
@@ -55,10 +55,10 @@ public class FilmService {
             if (userStorage.getUserById(userId) != null) {
                 filmStorage.getFilmById(filmId).getLikes().remove(userId);
             } else {
-                throw new UserNotFoundException("Ïîëüçîâàòåëü c ID=" + userId + " íå íàéäåí!");
+                throw new UserNotFoundException("ÐŸÐ¾Ð»ÑŒÐ·Ð¾Ð²Ð°Ñ‚ÐµÐ»ÑŒ c ID=" + userId + " Ð½Ðµ Ð½Ð°Ð¹Ð´ÐµÐ½!");
             }
         } else {
-            throw new FilmNotFoundException("Ôèëüì c ID=" + filmId + " íå íàéäåí!");
+            throw new FilmNotFoundException("Ð¤Ð¸Ð»ÑŒÐ¼ c ID=" + filmId + " Ð½Ðµ Ð½Ð°Ð¹Ð´ÐµÐ½!");
         }
     }
 }

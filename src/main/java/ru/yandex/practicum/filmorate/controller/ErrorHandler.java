@@ -14,18 +14,18 @@ public class ErrorHandler {
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse handleValidationException(final ValidationException e) {
-        return new ErrorResponse("Ошибка валидации", e.getMessage());
+        return new ErrorResponse("РћС€РёР±РєР° РІР°Р»РёРґР°С†РёРё", e.getMessage());
     }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorResponse handleFilmNotFoundException(final FilmNotFoundException e) {
-        return new ErrorResponse("Искомый фильм не найден", e.getMessage());
+        return new ErrorResponse("РСЃРєРѕРјС‹Р№ С„РёР»СЊРј РЅРµ РЅР°Р№РґРµРЅ", e.getMessage());
     }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorResponse handleUserNotFoundException(final UserNotFoundException e) {
-        return new ErrorResponse("Искомый пользователь не найден", e.getMessage());
+        return new ErrorResponse("РСЃРєРѕРјС‹Р№ РїРѕР»СЊР·РѕРІР°С‚РµР»СЊ РЅРµ РЅР°Р№РґРµРЅ", e.getMessage());
     }
 }

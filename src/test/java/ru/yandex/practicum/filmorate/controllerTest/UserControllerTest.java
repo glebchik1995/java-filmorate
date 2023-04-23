@@ -46,16 +46,16 @@ public class UserControllerTest {
                     user.setLogin(" glebchik 95");
                     userController.createUser(user);
                 });
-        assertEquals("Поле с логином некорректно заполнено", exception.getMessage());
+        assertEquals("РџРѕР»Рµ СЃ Р»РѕРіРёРЅРѕРј РЅРµРєРѕСЂСЂРµРєС‚РЅРѕ Р·Р°РїРѕР»РЅРµРЅРѕ", exception.getMessage());
         assertEquals(0, userController.getAllUsers().size(),
-                "Количество пользователей в списке = 0");
+                "РљРѕР»РёС‡РµСЃС‚РІРѕ РїРѕР»СЊР·РѕРІР°С‚РµР»РµР№ РІ СЃРїРёСЃРєРµ = 0");
     }
 
 
     @Test
     public void shouldAddOneUser() {
         users.put(user.getId(), user);
-        assertEquals(1, users.size(), "Пользователь успешно добавлен");
+        assertEquals(1, users.size(), "РџРѕР»СЊР·РѕРІР°С‚РµР»СЊ СѓСЃРїРµС€РЅРѕ РґРѕР±Р°РІР»РµРЅ");
     }
 
     @Test
@@ -67,7 +67,7 @@ public class UserControllerTest {
                     user.setBirthday(LocalDate.of(3333, 3, 3));
                     userController.createUser(user);
                 });
-        assertEquals("Дата рождения не может быть в будущем", exception.getMessage());
+        assertEquals("Р”Р°С‚Р° СЂРѕР¶РґРµРЅРёСЏ РЅРµ РјРѕР¶РµС‚ Р±С‹С‚СЊ РІ Р±СѓРґСѓС‰РµРј", exception.getMessage());
     }
 
     @Test
@@ -78,8 +78,8 @@ public class UserControllerTest {
                     user.setLogin(" gleb chik");
                     userController.createUser(user);
                 });
-        assertEquals("Поле с логином некорректно заполнено", exception.getMessage());
-        assertEquals(0, userController.getAllUsers().size(), "Количество пользователей в списке = 0");
+        assertEquals("РџРѕР»Рµ СЃ Р»РѕРіРёРЅРѕРј РЅРµРєРѕСЂСЂРµРєС‚РЅРѕ Р·Р°РїРѕР»РЅРµРЅРѕ", exception.getMessage());
+        assertEquals(0, userController.getAllUsers().size(), "РљРѕР»РёС‡РµСЃС‚РІРѕ РїРѕР»СЊР·РѕРІР°С‚РµР»РµР№ РІ СЃРїРёСЃРєРµ = 0");
     }
 
 }

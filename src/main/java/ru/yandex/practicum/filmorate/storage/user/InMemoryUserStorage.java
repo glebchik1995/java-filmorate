@@ -38,7 +38,7 @@ public class InMemoryUserStorage implements UserStorage {
     public User updateUser(User user) {
         validate(user);
         if (!users.containsKey(user.getId())) {
-            throw new UserNotFoundException("Пользователь не найден");
+            throw new UserNotFoundException("РџРѕР»СЊР·РѕРІР°С‚РµР»СЊ РЅРµ РЅР°Р№РґРµРЅ");
         }
         users.put(user.getId(), user);
         return user;
@@ -47,7 +47,7 @@ public class InMemoryUserStorage implements UserStorage {
     @Override
     public User getUserById(Long userId) {
         if (!users.containsKey(userId)) {
-            throw new UserNotFoundException("Пользователь с ID= " + userId + " не найден!");
+            throw new UserNotFoundException("РџРѕР»СЊР·РѕРІР°С‚РµР»СЊ СЃ ID= " + userId + " РЅРµ РЅР°Р№РґРµРЅ!");
         }
         return users.get(userId);
     }
@@ -55,7 +55,7 @@ public class InMemoryUserStorage implements UserStorage {
     @Override
     public User deleteUser(Long userId) {
         if (!users.containsKey(userId)) {
-            throw new UserNotFoundException("Пользователь с ID= " + userId + " не найден!");
+            throw new UserNotFoundException("РџРѕР»СЊР·РѕРІР°С‚РµР»СЊ СЃ ID= " + userId + " РЅРµ РЅР°Р№РґРµРЅ!");
         }
         for (User user : users.values()) {
             user.getFriends().remove(userId);
@@ -65,17 +65,17 @@ public class InMemoryUserStorage implements UserStorage {
 
     public void validate(User user) {
         if (user.getLogin().contains(" ") || user.getLogin() == null) {
-            throw new ValidationException("Поле с логином некорректно заполнено");
+            throw new ValidationException("РџРѕР»Рµ СЃ Р»РѕРіРёРЅРѕРј РЅРµРєРѕСЂСЂРµРєС‚РЅРѕ Р·Р°РїРѕР»РЅРµРЅРѕ");
         }
         if (user.getName() == null || user.getName().isBlank()) {
             user.setName(user.getLogin());
         }
         if (!user.getEmail().contains("@")) {
-            throw new ValidationException("Поле с e-mail некорректно заполнено");
+            throw new ValidationException("РџРѕР»Рµ СЃ e-mail РЅРµРєРѕСЂСЂРµРєС‚РЅРѕ Р·Р°РїРѕР»РЅРµРЅРѕ");
         }
 
         if (user.getBirthday().isAfter(LocalDate.now())) {
-            throw new ValidationException("Дата рождения не может быть в будущем времени");
+            throw new ValidationException("Р”Р°С‚Р° СЂРѕР¶РґРµРЅРёСЏ РЅРµ РјРѕР¶РµС‚ Р±С‹С‚СЊ РІ Р±СѓРґСѓС‰РµРј РІСЂРµРјРµРЅРё");
         }
     }
 }

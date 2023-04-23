@@ -16,20 +16,20 @@ import java.util.Set;
 @Setter
 @Builder
 public class Film {
-    @NotNull(message = "Нумерация начинается с единицы")
+    @NotNull(message = "РќСѓРјРµСЂР°С†РёСЏ РЅР°С‡РёРЅР°РµС‚СЃСЏ СЃ РµРґРёРЅРёС†С‹")
     private long id;
 
-    @NotBlank(message = "Поле с названием фильма должно быть заполнено")
+    @NotBlank(message = "РџРѕР»Рµ СЃ РЅР°Р·РІР°РЅРёРµРј С„РёР»СЊРјР° РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ Р·Р°РїРѕР»РЅРµРЅРѕ")
     private String name;
 
     @NotBlank
-    @Size(min = 1, max = 200, message = "Количество символов должно быть больше 0 и не превышать 200")
+    @Size(min = 1, max = 200, message = "РљРѕР»РёС‡РµСЃС‚РІРѕ СЃРёРјРІРѕР»РѕРІ РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ Р±РѕР»СЊС€Рµ 0 Рё РЅРµ РїСЂРµРІС‹С€Р°С‚СЊ 200")
     private String description;
 
-    @NotNull(message = "Поле дата релиза должно быть заполнено")
+    @NotNull(message = "РџРѕР»Рµ РґР°С‚Р° СЂРµР»РёР·Р° РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ Р·Р°РїРѕР»РЅРµРЅРѕ")
     private LocalDate releaseDate;
 
-    @Positive(message = "Продолжительность не может быть отрицательной")
+    @Positive(message = "РџСЂРѕРґРѕР»Р¶РёС‚РµР»СЊРЅРѕСЃС‚СЊ РЅРµ РјРѕР¶РµС‚ Р±С‹С‚СЊ РѕС‚СЂРёС†Р°С‚РµР»СЊРЅРѕР№")
     private int duration;
 
     private final Set<Long> likes = new HashSet<>();

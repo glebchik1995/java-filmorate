@@ -31,20 +31,20 @@ public class FilmController {
 
     @PostMapping
     public Film createFilm(@Valid @RequestBody Film film) {
-        log.info("Фильм {} успешно добавлен ", film);
+        log.info("Р¤РёР»СЊРј {} СѓСЃРїРµС€РЅРѕ РґРѕР±Р°РІР»РµРЅ ", film);
         return filmStorage.createFilm(film);
     }
 
     @PutMapping
     public Film updateFilm(@Valid @RequestBody Film film) {
-        log.info("Фильм {} успешно обновлен", film);
+        log.info("Р¤РёР»СЊРј {} СѓСЃРїРµС€РЅРѕ РѕР±РЅРѕРІР»РµРЅ", film);
         return filmStorage.updateFilm(film);
     }
 
     @GetMapping
     public List<Film> getAllFilms() {
-        log.info("На текущий момент " + LocalDate.now() +
-                " количество фильмов в списке составляет: " + filmStorage.getAllFilms().size());
+        log.info("РќР° С‚РµРєСѓС‰РёР№ РјРѕРјРµРЅС‚ " + LocalDate.now() +
+                " РєРѕР»РёС‡РµСЃС‚РІРѕ С„РёР»СЊРјРѕРІ РІ СЃРїРёСЃРєРµ СЃРѕСЃС‚Р°РІР»СЏРµС‚: " + filmStorage.getAllFilms().size());
         return filmStorage.getAllFilms();
     }
 

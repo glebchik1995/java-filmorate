@@ -20,7 +20,7 @@ public class UserService {
     public List<User> getFriends(Long userId) {
         User user = userStorage.getUserById(userId);
         if (user.getFriends() == null) {
-            throw new UserNotFoundException("Пользователь не найден");
+            throw new UserNotFoundException("РџРѕР»СЊР·РѕРІР°С‚РµР»СЊ РЅРµ РЅР°Р№РґРµРЅ");
         }
 
         List<User> usersFriend = new ArrayList<>();

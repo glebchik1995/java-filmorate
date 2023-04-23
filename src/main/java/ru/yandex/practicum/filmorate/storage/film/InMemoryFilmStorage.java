@@ -36,7 +36,7 @@ public class InMemoryFilmStorage implements FilmStorage {
     public Film updateFilm(Film film) {
         validate(film);
         if (!films.containsKey(film.getId())) {
-            throw new FilmNotFoundException("Фильм не найден");
+            throw new FilmNotFoundException("Р¤РёР»СЊРј РЅРµ РЅР°Р№РґРµРЅ");
         }
         films.put(film.getId(), film);
         return film;
@@ -45,7 +45,7 @@ public class InMemoryFilmStorage implements FilmStorage {
     @Override
     public Film getFilmById(Long filmId) {
         if (!films.containsKey(filmId)) {
-            throw new UserNotFoundException("Фильм с ID= " + filmId + " не найден!");
+            throw new UserNotFoundException("Р¤РёР»СЊРј СЃ ID= " + filmId + " РЅРµ РЅР°Р№РґРµРЅ!");
         }
         return films.get(filmId);
     }
@@ -53,23 +53,23 @@ public class InMemoryFilmStorage implements FilmStorage {
     @Override
     public Film deleteFilm(Long filmId) {
         if (!films.containsKey(filmId)) {
-            throw new UserNotFoundException("Фильм с ID= " + filmId + " не найден!");
+            throw new UserNotFoundException("Р¤РёР»СЊРј СЃ ID= " + filmId + " РЅРµ РЅР°Р№РґРµРЅ!");
         }
         return films.remove(filmId);
     }
 
     public void validate(Film film) {
         if (film.getReleaseDate().isBefore(LocalDate.of(1895, 12, 28))) {
-            throw new ValidationException("Дата релиза не может быть раньше 28.12.1895");
+            throw new ValidationException("Р”Р°С‚Р° СЂРµР»РёР·Р° РЅРµ РјРѕР¶РµС‚ Р±С‹С‚СЊ СЂР°РЅСЊС€Рµ 28.12.1895");
         }
         if (film.getDescription().length() < 1 || film.getDescription().length() > 200) {
-            throw new ValidationException("Количество символов должно быть больше 0 и не превышать 200");
+            throw new ValidationException("РљРѕР»РёС‡РµСЃС‚РІРѕ СЃРёРјРІРѕР»РѕРІ РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ Р±РѕР»СЊС€Рµ 0 Рё РЅРµ РїСЂРµРІС‹С€Р°С‚СЊ 200");
         }
         if (film.getDuration() < 0) {
-            throw new ValidationException("Продолжительность не может быть отрицательной");
+            throw new ValidationException("РџСЂРѕРґРѕР»Р¶РёС‚РµР»СЊРЅРѕСЃС‚СЊ РЅРµ РјРѕР¶РµС‚ Р±С‹С‚СЊ РѕС‚СЂРёС†Р°С‚РµР»СЊРЅРѕР№");
         }
         if (film.getName().isEmpty() || film.getName().isBlank()) {
-            throw new ValidationException("Поле с названием фильма должно быть заполнено");
+            throw new ValidationException("РџРѕР»Рµ СЃ РЅР°Р·РІР°РЅРёРµРј С„РёР»СЊРјР° РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ Р·Р°РїРѕР»РЅРµРЅРѕ");
         }
     }
 }

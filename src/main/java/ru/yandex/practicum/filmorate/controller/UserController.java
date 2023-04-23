@@ -31,20 +31,20 @@ public class UserController {
 
     @PostMapping
     public User createUser(@Valid @RequestBody User user) {
-        log.info("Пользователь {} успешно добавлен", user);
+        log.info("РџРѕР»СЊР·РѕРІР°С‚РµР»СЊ {} СѓСЃРїРµС€РЅРѕ РґРѕР±Р°РІР»РµРЅ", user);
         return userStorage.createUser(user);
     }
 
     @PutMapping
     public User updateUser(@Valid @RequestBody User user) {
-        log.info("Пользователь {} успешно обновлен", user);
+        log.info("РџРѕР»СЊР·РѕРІР°С‚РµР»СЊ {} СѓСЃРїРµС€РЅРѕ РѕР±РЅРѕРІР»РµРЅ", user);
         return userStorage.updateUser(user);
     }
 
     @GetMapping
     public List<User> getAllUsers() {
-        log.info("На текущий момент " + LocalDate.now() +
-                " количество пользователей в списке составляет: " + userStorage.getAllUsers().size());
+        log.info("РќР° С‚РµРєСѓС‰РёР№ РјРѕРјРµРЅС‚ " + LocalDate.now() +
+                " РєРѕР»РёС‡РµСЃС‚РІРѕ РїРѕР»СЊР·РѕРІР°С‚РµР»РµР№ РІ СЃРїРёСЃРєРµ СЃРѕСЃС‚Р°РІР»СЏРµС‚: " + userStorage.getAllUsers().size());
         return userStorage.getAllUsers();
     }
 
