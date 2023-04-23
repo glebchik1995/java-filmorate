@@ -5,6 +5,11 @@ import org.junit.jupiter.api.Test;
 import ru.yandex.practicum.filmorate.controller.FilmController;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
+import ru.yandex.practicum.filmorate.service.FilmService;
+import ru.yandex.practicum.filmorate.storage.film.FilmStorage;
+import ru.yandex.practicum.filmorate.storage.film.InMemoryFilmStorage;
+import ru.yandex.practicum.filmorate.storage.user.InMemoryUserStorage;
+import ru.yandex.practicum.filmorate.storage.user.UserStorage;
 
 import java.time.LocalDate;
 import java.util.HashMap;
@@ -20,14 +25,18 @@ public class FilmControllerTest {
 
     @BeforeEach
     public void beforeEach() {
-        filmController = new FilmController();
+        FilmStorage filmStorage = new InMemoryFilmStorage();
+        UserStorage userStorage = new InMemoryUserStorage();
+        FilmService filmService = new FilmService(filmStorage,userStorage);
+
+        filmController = new FilmController(filmService,filmStorage);
         films = new HashMap<>();
         film = Film.builder()
                 .name("Американский пирог")
                 .description("Комедия")
                 .duration(95)
                 .releaseDate(LocalDate.of(1999, 1, 10))
-                .build();
+                .id(1).build();
     }
 
     @Test
@@ -96,6 +105,13 @@ public class FilmControllerTest {
         assertEquals("Продолжительность не может быть отрицательной", exception.getMessage());
         assertEquals(0, filmController.getAllFilms().size(),"Список фильмов пуст");
 
+    }
+
+    @Test
+    public void shouldDeleteUser() {
+        filmController.createFilm(film);
+        filmController.deleteFilm(film.getId());
+        assertEquals(0, filmController.getAllFilms().size(), "Количество фильмов в списке = 0");
     }
 
 }

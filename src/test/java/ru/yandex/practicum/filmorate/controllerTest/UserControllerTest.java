@@ -5,6 +5,9 @@ import org.junit.jupiter.api.Test;
 import ru.yandex.practicum.filmorate.controller.UserController;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
+import ru.yandex.practicum.filmorate.service.UserService;
+import ru.yandex.practicum.filmorate.storage.user.InMemoryUserStorage;
+import ru.yandex.practicum.filmorate.storage.user.UserStorage;
 
 import java.time.LocalDate;
 import java.util.HashMap;
@@ -20,14 +23,16 @@ public class UserControllerTest {
 
     @BeforeEach
     public void beforeEach() {
-        userController = new UserController();
+        UserStorage userStorage = new InMemoryUserStorage();
+        UserService userService = new UserService(userStorage);
+        userController = new UserController(userStorage,userService);
         users = new HashMap<>();
         user = User.builder()
                 .email("gleb.verbickiy@yandex.ru")
                 .login("glebchik_95")
                 .name("Gleb")
                 .birthday(LocalDate.of(1995, 12, 15))
-                .build();
+                .id(1).build();
     }
 
     @Test
@@ -67,7 +72,7 @@ public class UserControllerTest {
                     user.setBirthday(LocalDate.of(3333, 3, 3));
                     userController.createUser(user);
                 });
-        assertEquals("Дата рождения не может быть в будущем", exception.getMessage());
+        assertEquals("Дата рождения не может быть в будущем времени", exception.getMessage());
     }
 
     @Test
@@ -79,6 +84,13 @@ public class UserControllerTest {
                     userController.createUser(user);
                 });
         assertEquals("Поле с логином некорректно заполнено", exception.getMessage());
+        assertEquals(0, userController.getAllUsers().size(), "Количество пользователей в списке = 0");
+    }
+
+    @Test
+    public void shouldDeleteUser() {
+        userController.createUser(user);
+        userController.deleteUser(user.getId());
         assertEquals(0, userController.getAllUsers().size(), "Количество пользователей в списке = 0");
     }
 
