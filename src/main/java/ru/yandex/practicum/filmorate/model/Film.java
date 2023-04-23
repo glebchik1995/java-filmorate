@@ -9,23 +9,26 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
-@Builder(toBuilder = true)
+@Builder
 public class Film {
-    @NotNull(message = "РќСѓРјРµСЂР°С†РёСЏ РЅР°С‡РёРЅР°РµС‚СЃСЏ СЃ РµРґРёРЅРёС†С‹")
+    @NotNull(message = "Нумерация начинается с единицы")
     private long id;
 
-    @NotBlank(message = "РџРѕР»Рµ СЃ РЅР°Р·РІР°РЅРёРµРј С„РёР»СЊРјР° РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ Р·Р°РїРѕР»РЅРµРЅРѕ")
+    @NotBlank(message = "Поле с названием фильма должно быть заполнено")
     private String name;
 
     @NotBlank
-    @Size(min = 1, max = 200, message = "РљРѕР»РёС‡РµСЃС‚РІРѕ СЃРёРјРІРѕР»РѕРІ РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ Р±РѕР»СЊС€Рµ 0 Рё РЅРµ РїСЂРµРІС‹С€Р°С‚СЊ 200")
+    @Size(min = 1, max = 200, message = "Количество символов должно быть больше 0 и не превышать 200")
     private String description;
 
-    @NotNull(message = "РџРѕР»Рµ РґР°С‚Р° СЂРµР»РёР·Р° РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ Р·Р°РїРѕР»РЅРµРЅРѕ")
+    @NotNull(message = "Поле дата релиза должно быть заполнено")
     private LocalDate releaseDate;
-    @Positive(message = "РџСЂРѕРґРѕР»Р¶РёС‚РµР»СЊРЅРѕСЃС‚СЊ РЅРµ РјРѕР¶РµС‚ Р±С‹С‚СЊ РѕС‚СЂРёС†Р°С‚РµР»СЊРЅРѕР№")
+    @Positive(message = "Продолжительность не может быть отрицательной")
     private int duration;
+    private final Set<Long> likes = new HashSet<>();
 }
