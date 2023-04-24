@@ -18,19 +18,14 @@ public class UserService {
     }
 
     public List<User> getFriends(Long userId) {
-
-        userStorage.getAllUsers().stream()
-                .filter(x -> x.getId() == userId)
-                .findFirst()
-                .orElseThrow(() -> new UserNotFoundException("Пользователь с ID = " + userId + " не найден"));
-
-        List<User> friendsList = new ArrayList<>();
-        for (Long friendId : userStorage.getUserById(userId).getFriends()) {
-            User friendById = userStorage.getUserById(friendId);
-            friendsList.add(friendById);
+        User user = userStorage.getUserById(userId);
+        List<User> friends = new ArrayList<>();
+        if (user.getFriends() != null) {
+            for (Long currentId : user.getFriends()) {
+                friends.add(userStorage.getUserById(currentId));
+            }
         }
-
-        return friendsList;
+        return friends;
     }
 
     public void addFriend(Long userId, Long friendId) {
