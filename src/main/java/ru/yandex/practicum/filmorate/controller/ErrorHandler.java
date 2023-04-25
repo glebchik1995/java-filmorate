@@ -28,4 +28,10 @@ public class ErrorHandler {
     public ErrorResponse handleUserNotFoundException(final UserNotFoundException e) {
         return new ErrorResponse("Искомый пользователь не найден", e.getMessage());
     }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ErrorResponse handleFilmNotFound(final Exception e) {
+        return new ErrorResponse("Ошибка 500:", e.getMessage());
+    }
 }

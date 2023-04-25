@@ -15,6 +15,7 @@ import java.util.Set;
 @Setter
 @Builder(toBuilder = true)
 public class User {
+
     @NotNull(message = "Нумерация начинается с единицы")
     private long id;
 

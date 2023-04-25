@@ -13,7 +13,7 @@ import java.util.Map;
 
 @Component
 public class InMemoryUserStorage implements UserStorage {
-    private final Map<Long, User> users = new HashMap<>();
+    private Map<Long, User> users = new HashMap<>();
     private Long idGenerator = 0L;
 
     private Long idPlus() {
