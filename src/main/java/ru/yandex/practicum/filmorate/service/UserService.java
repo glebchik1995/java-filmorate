@@ -1,6 +1,6 @@
 package ru.yandex.practicum.filmorate.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.exception.UserNotFoundException;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
@@ -12,13 +12,9 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class UserService {
     private final UserStorage userStorage;
-
-    @Autowired
-    public UserService(UserStorage userStorage) {
-        this.userStorage = userStorage;
-    }
 
     public void createUser(User user) {
         userStorage.createUser(user);
@@ -37,18 +33,12 @@ public class UserService {
     }
 
     public List<User> getFriends(Long userId) {
-
-        userStorage.getAllUsers().stream()
-                .filter(x -> x.getId() == userId)
-                .findFirst()
-                .orElseThrow(() -> new UserNotFoundException("Пользователь с ID = " + userId + " не найден"));
-
+        getUserById(userId);
         List<User> friendsList = new ArrayList<>();
         for (Long friendId : userStorage.getUserById(userId).getFriends()) {
             User friendById = userStorage.getUserById(friendId);
             friendsList.add(friendById);
         }
-
         return friendsList;
     }
 
@@ -79,6 +69,14 @@ public class UserService {
     }
 
     public List<User> getMutualFriends(Long firstUserId, Long secondUserId) {
+        userStorage.getAllUsers().stream()
+                .filter(x -> x.getId() == firstUserId)
+                .findFirst()
+                .orElseThrow(() -> new UserNotFoundException("Пользователь с id = " + firstUserId + " не найден"));
+        userStorage.getAllUsers().stream()
+                .filter(x -> x.getId() == secondUserId)
+                .findFirst()
+                .orElseThrow(() -> new UserNotFoundException("Пользователь с id = " + secondUserId + " не найден"));
         List<Long> general = userStorage.getUserById(firstUserId)
                 .getFriends()
                 .stream()

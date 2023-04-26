@@ -13,11 +13,12 @@ import java.util.Set;
 
 @Getter
 @Setter
-@Builder(toBuilder = true)
+@Builder
 public class User {
 
-    @NotNull(message = "Нумерация начинается с единицы")
     private long id;
+
+    private final Set<Long> friends = new HashSet<>();
 
     @NotBlank(message = "Поле с email должно быть заполнено")
     @Email(message = "Поле с email должно содержать @")
@@ -32,5 +33,4 @@ public class User {
     @NotNull(message = "Поле с датой рождения должно быть заполнено")
     private LocalDate birthday;
 
-    private final Set<Long> friends = new HashSet<>();
 }
