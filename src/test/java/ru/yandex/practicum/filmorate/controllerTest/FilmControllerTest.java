@@ -29,7 +29,7 @@ public class FilmControllerTest {
         UserStorage userStorage = new InMemoryUserStorage();
         FilmService filmService = new FilmService(filmStorage,userStorage);
 
-        filmController = new FilmController(filmService,filmStorage);
+        filmController = new FilmController(filmService);
         films = new HashMap<>();
         film = Film.builder()
                 .name("Американский пирог")

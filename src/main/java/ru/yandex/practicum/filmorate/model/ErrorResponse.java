@@ -11,11 +11,4 @@ public class ErrorResponse {
         this.description = description;
     }
 
-    public String getError() {
-        return error;
-    }
-
-    public String getDescription() {
-        return description;
-    }
 }
