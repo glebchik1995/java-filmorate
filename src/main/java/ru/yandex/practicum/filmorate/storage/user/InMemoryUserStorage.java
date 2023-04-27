@@ -40,7 +40,7 @@ public class InMemoryUserStorage implements UserStorage {
     public void updateUser(User user) {
         for (User user1 : users.values()) {
             if (user1.getEmail().equals(user.getEmail())) {
-                throw new UserAlreadyExistException("Пользователь с таким email уже существует");
+                throw new UserNotFoundException("Пользователь с таким email уже существует");
             }
             if (!users.containsKey(user.getId())) {
                 throw new UserNotFoundException("Пользователь с ID=" + user.getId() + " не найден!");

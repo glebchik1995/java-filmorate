@@ -39,11 +39,6 @@ public class InMemoryFilmStorage implements FilmStorage {
         if (!films.containsKey(film.getId())) {
             throw new FilmNotFoundException("Фильм не найден");
         }
-        for (Film film1 : films.values()) {
-            if (film1.getId() == film.getId()) {
-                throw new FilmAlreadyExistException("Такой фильм уже существует");
-            }
-        }
         films.put(film.getId(), film);
     }
 
