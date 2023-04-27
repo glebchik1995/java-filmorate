@@ -39,34 +39,34 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public User getUserById(@PathVariable Long userId) {
-        log.info("Получен запрос на получение пользователя с ID={}.", userId);
-        return userService.getUserById(userId);
+    public User getUserById(@PathVariable Long id) {
+        log.info("Получен запрос на получение пользователя с ID={}.", id);
+        return userService.getUserById(id);
     }
 
     @GetMapping("/{id}/friends")
-    public List<User> getFriends(@PathVariable Long userId) {
+    public List<User> getFriends(@PathVariable Long id) {
         log.info("Получен запрос на получение списка пользователей, которые являются друзьями пользователя с ID={}.",
-                userId);
-        return userService.getFriends(userId);
+                id);
+        return userService.getFriends(id);
     }
 
     @GetMapping("/{id}/friends/common/{otherId}")
-    public List<User> getMutualFriends(@PathVariable Long firstUserId, @PathVariable Long secondUserId) {
+    public List<User> getMutualFriends(@PathVariable Long id, @PathVariable Long otherId) {
         log.info("Получен запрос на получение списка общих друзей пользователя с ID={} и пользователя с ID={}.",
-                firstUserId, secondUserId);
-        return userService.getMutualFriends(firstUserId, secondUserId);
+                id, otherId);
+        return userService.getMutualFriends(id, otherId);
     }
 
     @PutMapping("/{id}/friends/{friendId}")
-    public void addFriend(@PathVariable Long userId, @PathVariable Long friendId) {
-        userService.addFriend(userId, friendId);
-        log.info("Пользователь с ID={} добавляет в список друзей пользователя с ID={}.", friendId, userId);
+    public void addFriend(@PathVariable Long id, @PathVariable Long friendId) {
+        userService.addFriend(id, friendId);
+        log.info("Пользователь с ID={} добавляет в список друзей пользователя с ID={}.", friendId, id);
     }
 
     @DeleteMapping("/{id}/friends/{friendId}")
-    public void deleteFriend(@PathVariable Long userId, @PathVariable Long friendId) {
-        userService.deleteFriend(userId, friendId);
-        log.info("Пользователь с ID={} удаляет из списка друзей пользователя с ID={}.", friendId, userId);
+    public void deleteFriend(@PathVariable Long id, @PathVariable Long friendId) {
+        userService.deleteFriend(id, friendId);
+        log.info("Пользователь с ID={} удаляет из списка друзей пользователя с ID={}.", friendId, id);
     }
 }

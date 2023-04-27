@@ -40,13 +40,13 @@ public class FilmController {
     }
 
     @GetMapping("/{id}")
-    public Film getFilmById(@PathVariable Long filmId) {
-        log.info("Получен запрос на получение фильма с ID={}.", filmId);
-        return filmService.getFilmById(filmId);
+    public Film getFilmById(@PathVariable Long id) {
+        log.info("Получен запрос на получение фильма с ID={}.", id);
+        return filmService.getFilmById(id);
     }
 
     @GetMapping("/popular")
-    public List<Film> getPopular(@RequestParam(name = "count", defaultValue = "10") Integer count) {
+    public List<Film> getPopular(@RequestParam(defaultValue = "10") Integer count) {
         log.info("Получен запрос на получение списка из {} самых популярных фильмов.",count);
         return filmService.getPopular(count);
     }
@@ -65,9 +65,9 @@ public class FilmController {
     }
 
     @DeleteMapping("/{id}")
-    public void deleteFilm(@PathVariable Long filmId) {
-        filmService.deleteFilm(filmId);
-        log.info("Фильм с ID={} успешно удален.", filmId);
+    public void deleteFilm(@PathVariable Long id) {
+        filmService.deleteFilm(id);
+        log.info("Фильм с ID={} успешно удален.", id);
     }
 
 }

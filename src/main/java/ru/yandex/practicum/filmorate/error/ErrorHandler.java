@@ -33,13 +33,6 @@ public class ErrorHandler {
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public ErrorResponse handleFilmNotFound(final Exception e) {
-        log.info("Ошибка 500 {}", e.getMessage());
-        return new ErrorResponse(e.getMessage());
-    }
-
-    @ExceptionHandler
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ErrorResponse handleIllegalArgumentException(final IllegalArgumentException e) {
         log.info("Ошибка 500 {}", e.getMessage());
         return new ErrorResponse(e.getMessage());

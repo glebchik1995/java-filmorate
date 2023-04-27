@@ -36,6 +36,11 @@ public class InMemoryFilmStorage implements FilmStorage {
 
     @Override
     public void updateFilm(Film film) {
+        for (Film film1 : films.values()) {
+            if (film1.getId() == film.getId()) {
+                throw new FilmAlreadyExistException("Такой фильм уже существует");
+            }
+        }
         if (!films.containsKey(film.getId())) {
             throw new FilmNotFoundException("Фильм не найден");
         }
