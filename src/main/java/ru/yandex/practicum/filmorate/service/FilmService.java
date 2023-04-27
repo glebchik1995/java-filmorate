@@ -45,7 +45,7 @@ public class FilmService {
 
     public List<Film> getPopular(Integer count) {
         if (count < 1) {
-            throw new IllegalArgumentException("Количество фильмов для вывода не должно быть меньше 1");
+            throw new ValidationException("Количество фильмов для вывода не должно быть меньше 1");
         }
 
         return filmStorage

@@ -10,7 +10,7 @@ import java.util.*;
 @Component
 public class InMemoryFilmStorage implements FilmStorage {
 
-    protected final Map<Long, Film> films = new HashMap<>();
+    private final Map<Long, Film> films = new HashMap<>();
     private Long idGenerator = 0L;
 
     private Long idPlus() {
@@ -36,13 +36,13 @@ public class InMemoryFilmStorage implements FilmStorage {
 
     @Override
     public void updateFilm(Film film) {
+        if (!films.containsKey(film.getId())) {
+            throw new FilmNotFoundException("Фильм не найден");
+        }
         for (Film film1 : films.values()) {
             if (film1.getId() == film.getId()) {
                 throw new FilmAlreadyExistException("Такой фильм уже существует");
             }
-        }
-        if (!films.containsKey(film.getId())) {
-            throw new FilmNotFoundException("Фильм не найден");
         }
         films.put(film.getId(), film);
     }

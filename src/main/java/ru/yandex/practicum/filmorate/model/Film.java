@@ -16,8 +16,11 @@ import java.util.Set;
 @Setter
 @Builder
 public class Film {
+
     @NotNull(message = "Нумерация начинается с единицы")
     private long id;
+
+    private final Set<Long> likes = new HashSet<>();
 
     @NotBlank(message = "Поле с названием фильма должно быть заполнено")
     private String name;
@@ -32,5 +35,4 @@ public class Film {
     @Positive(message = "Продолжительность не может быть отрицательной")
     private int duration;
 
-    private final Set<Long> likes = new HashSet<>();
 }

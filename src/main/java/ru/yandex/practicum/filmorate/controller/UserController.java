@@ -7,7 +7,6 @@ import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.service.UserService;
 
 import javax.validation.Valid;
-import java.time.LocalDate;
 import java.util.*;
 
 @Slf4j
@@ -33,8 +32,7 @@ public class UserController {
 
     @GetMapping
     public List<User> getAllUsers() {
-        log.info("На текущий момент " + LocalDate.now() +
-                " количество пользователей в списке составляет: " + userService.getAllUsers().size());
+        log.info("Получен запрос на получение списка всех пользователей.");
         return userService.getAllUsers();
     }
 

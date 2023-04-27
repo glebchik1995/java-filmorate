@@ -16,6 +16,7 @@ import java.util.Set;
 @Builder
 public class User {
 
+    @NotNull(message = "Нумерация начинается с единицы")
     private long id;
 
     private final Set<Long> friends = new HashSet<>();
