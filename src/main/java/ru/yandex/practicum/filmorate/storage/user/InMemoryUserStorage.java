@@ -1,6 +1,7 @@
 package ru.yandex.practicum.filmorate.storage.user;
 
 import org.springframework.stereotype.Component;
+import ru.yandex.practicum.filmorate.exception.UserAlreadyExistException;
 import ru.yandex.practicum.filmorate.exception.UserNotFoundException;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
@@ -29,7 +30,7 @@ public class InMemoryUserStorage implements UserStorage {
     public void createUser(User user) {
         for (User user1 : users.values()) {
             if (user1.getEmail().equals(user.getEmail())) {
-                throw new ValidationException("Пользователь с таким email уже существует");
+                throw new UserAlreadyExistException("Пользователь с таким email уже существует");
             }
         }
         user.setId(idPlus());
@@ -39,17 +40,17 @@ public class InMemoryUserStorage implements UserStorage {
     @Override
     public void updateUser(User user) {
         if (!users.containsKey(user.getId())) {
-            throw new UserNotFoundException("Пользователь не найден");
+            throw new UserNotFoundException("Пользователь с ID=" + user.getId() + " не найден!");
         }
         users.put(user.getId(), user);
     }
 
     @Override
     public User getUserById(Long userId) {
-        return users.values().stream()
-                .filter(x -> x.getId() == userId)
-                .findFirst()
-                .orElseThrow(() -> new UserNotFoundException("Пользователь с ID= " + userId + " не найден!"));
+        if (!users.containsKey(userId)) {
+            throw new UserNotFoundException("Пользователь с ID=" + userId + " не найден!");
+        }
+        return users.get(userId);
     }
 }
 

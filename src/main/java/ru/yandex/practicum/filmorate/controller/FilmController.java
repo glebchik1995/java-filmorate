@@ -20,7 +20,6 @@ public class FilmController {
 
     @PostMapping
     public Film createFilm(@Valid @RequestBody Film film) {
-        filmService.validate(film);
         filmService.createFilm(film);
         log.info("Фильм {} успешно добавлен ", film);
         return film;
@@ -28,7 +27,6 @@ public class FilmController {
 
     @PutMapping
     public Film updateFilm(@Valid @RequestBody Film film) {
-        filmService.validate(film);
         filmService.updateFilm(film);
         log.info("Фильм {} успешно обновлен", film);
         return film;

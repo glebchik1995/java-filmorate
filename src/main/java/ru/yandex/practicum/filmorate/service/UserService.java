@@ -2,14 +2,12 @@ package ru.yandex.practicum.filmorate.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.yandex.practicum.filmorate.exception.UserNotFoundException;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.user.UserStorage;
 
 import java.time.LocalDate;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -17,10 +15,12 @@ public class UserService {
     private final UserStorage userStorage;
 
     public void createUser(User user) {
+        validate(user);
         userStorage.createUser(user);
     }
 
     public void updateUser(User user) {
+        validate(user);
         userStorage.updateUser(user);
     }
 
@@ -43,47 +43,29 @@ public class UserService {
     }
 
     public void addFriend(Long userId, Long friendId) {
-        userStorage.getAllUsers().stream()
-                .filter(x -> x.getId() == userId)
-                .findFirst()
-                .orElseThrow(() -> new UserNotFoundException("Пользователь с id = " + userId + " не найден"));
-        userStorage.getAllUsers().stream()
-                .filter(x -> x.getId() == friendId)
-                .findFirst()
-                .orElseThrow(() -> new UserNotFoundException("Пользователь с id = " + friendId + " не найден"));
-        userStorage.getUserById(userId).getFriends().add(friendId);
-        userStorage.getUserById(friendId).getFriends().add(userId);
+        final User user = userStorage.getUserById(userId);
+        final User friend = userStorage.getUserById(friendId);
+        userStorage.getUserById(friendId);
+        user.getFriends().add(friendId);
+        friend.getFriends().add(userId);
     }
 
     public void deleteFriend(Long userId, Long friendId) {
-        userStorage.getAllUsers().stream()
-                .filter(x -> x.getId() == userId)
-                .findFirst()
-                .orElseThrow(() -> new UserNotFoundException("Пользователь с id = " + userId + " не найден"));
-        userStorage.getAllUsers().stream()
-                .filter(x -> x.getId() == friendId)
-                .findFirst()
-                .orElseThrow(() -> new UserNotFoundException("Пользователь с id = " + friendId + " не найден"));
-        userStorage.getUserById(userId).getFriends().remove(friendId);
-        userStorage.getUserById(friendId).getFriends().remove(userId);
+        final User user = userStorage.getUserById(userId);
+        final User friend = userStorage.getUserById(friendId);
+        userStorage.getUserById(friendId);
+        user.getFriends().remove(friendId);
+        friend.getFriends().remove(userId);
     }
 
-    public List<User> getMutualFriends(Long firstUserId, Long secondUserId) {
-        userStorage.getAllUsers().stream()
-                .filter(x -> x.getId() == firstUserId)
-                .findFirst()
-                .orElseThrow(() -> new UserNotFoundException("Пользователь с id = " + firstUserId + " не найден"));
-        userStorage.getAllUsers().stream()
-                .filter(x -> x.getId() == secondUserId)
-                .findFirst()
-                .orElseThrow(() -> new UserNotFoundException("Пользователь с id = " + secondUserId + " не найден"));
-        List<Long> general = userStorage.getUserById(firstUserId)
-                .getFriends()
-                .stream()
-                .filter(userStorage.getUserById(secondUserId).getFriends()::contains).collect(Collectors.toList());
+    public List<User> getMutualFriends(Long userId, Long otherId) {
+        final User firstUser = userStorage.getUserById(userId);
+        final User secondUser = userStorage.getUserById(otherId);
+        Set<Long> intersections = new HashSet<>(firstUser.getFriends());
+        intersections.retainAll(secondUser.getFriends());
         List<User> mutualFriends = new ArrayList<>();
-        for (Long user : general) {
-            mutualFriends.add(userStorage.getUserById(user));
+        for (Long intersection : intersections) {
+            mutualFriends.add(userStorage.getUserById(intersection));
         }
         return mutualFriends;
     }

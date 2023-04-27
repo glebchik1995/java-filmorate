@@ -19,7 +19,6 @@ public class UserController {
 
     @PostMapping
     public User createUser(@Valid @RequestBody User user) {
-        userService.validate(user);
         userService.createUser(user);
         log.info("Пользователь {} успешно добавлен", user);
         return user;
@@ -27,7 +26,6 @@ public class UserController {
 
     @PutMapping
     public User updateUser(@Valid @RequestBody User user) {
-        userService.validate(user);
         userService.updateUser(user);
         log.info("Пользователь {} успешно обновлен", user);
         return user;

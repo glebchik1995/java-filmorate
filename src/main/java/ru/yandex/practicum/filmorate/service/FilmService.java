@@ -19,12 +19,14 @@ public class FilmService {
     private final FilmStorage filmStorage;
     private final UserStorage userStorage;
 
-    public void updateFilm(Film film) {
-        filmStorage.updateFilm(film);
+    public void createFilm(Film film) {
+        validate(film);
+        filmStorage.createFilm(film);
     }
 
-    public void createFilm(Film film) {
-        filmStorage.createFilm(film);
+    public void updateFilm(Film film) {
+        validate(film);
+        filmStorage.updateFilm(film);
     }
 
 
@@ -43,7 +45,7 @@ public class FilmService {
 
     public List<Film> getPopular(Integer count) {
         if (count < 1) {
-            throw new ValidationException("Количество фильмов для вывода не должно быть меньше 1");
+            throw new IllegalArgumentException("Количество фильмов для вывода не должно быть меньше 1");
         }
 
         return filmStorage
@@ -61,8 +63,9 @@ public class FilmService {
     }
 
     public void deleteLike(Long filmId, Long userId) {
+        final Film film = filmStorage.getFilmById(filmId);
         userStorage.getUserById(userId);
-        Film film = filmStorage.getFilmById(filmId);
+        filmStorage.getFilmById(filmId);
         film.getLikes().remove(userId);
     }
 
