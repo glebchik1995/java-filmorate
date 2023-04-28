@@ -1,8 +1,8 @@
 package ru.yandex.practicum.filmorate.storage.film;
 
 import org.springframework.stereotype.Component;
-import ru.yandex.practicum.filmorate.exception.FilmAlreadyExistException;
-import ru.yandex.practicum.filmorate.exception.FilmNotFoundException;
+import ru.yandex.practicum.filmorate.exception.DataAlreadyExistException;
+import ru.yandex.practicum.filmorate.exception.DataNotFoundException;
 import ru.yandex.practicum.filmorate.model.Film;
 
 import java.util.*;
@@ -24,10 +24,8 @@ public class InMemoryFilmStorage implements FilmStorage {
 
     @Override
     public Film createFilm(Film film) {
-        for (Film film1 : films.values()) {
-            if (film1.getId() == film.getId()) {
-                throw new FilmAlreadyExistException("Такой фильм уже существует");
-            }
+        if (films.containsKey(film.getId())) {
+            throw new DataAlreadyExistException("Такой фильм уже существует");
         }
         film.setId(idPlus());
         films.put(film.getId(), film);
@@ -37,7 +35,7 @@ public class InMemoryFilmStorage implements FilmStorage {
     @Override
     public void updateFilm(Film film) {
         if (!films.containsKey(film.getId())) {
-            throw new FilmNotFoundException("Фильм не найден");
+            throw new DataNotFoundException("Фильм не найден");
         }
         films.put(film.getId(), film);
     }
@@ -45,7 +43,7 @@ public class InMemoryFilmStorage implements FilmStorage {
     @Override
     public Film getFilmById(Long filmId) {
         if (!films.containsKey(filmId)) {
-            throw new FilmNotFoundException("Фильм с ID= " + filmId + " не найден!");
+            throw new DataNotFoundException("Фильм с ID= " + filmId + " не найден!");
         }
         return films.get(filmId);
     }
@@ -53,7 +51,7 @@ public class InMemoryFilmStorage implements FilmStorage {
     @Override
     public Film deleteFilm(Long filmId) {
         if (!films.containsKey(filmId)) {
-            throw new FilmNotFoundException("Фильм с ID= " + filmId + " не найден!");
+            throw new DataNotFoundException("Фильм с ID= " + filmId + " не найден!");
         }
         return films.remove(filmId);
     }

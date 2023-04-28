@@ -19,14 +19,7 @@ public class ErrorHandler {
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ErrorResponse handleFilmNotFoundException(final FilmNotFoundException e) {
-        log.info("Ошибка 404 {}", e.getMessage());
-        return new ErrorResponse(e.getMessage());
-    }
-
-    @ExceptionHandler
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ErrorResponse handleUserNotFoundException(final UserNotFoundException e) {
+    public ErrorResponse handleFilmNotFoundException(final DataNotFoundException e) {
         log.info("Ошибка 404 {}", e.getMessage());
         return new ErrorResponse(e.getMessage());
     }
@@ -40,14 +33,7 @@ public class ErrorHandler {
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.CONFLICT)
-    public ErrorResponse handleUserAlreadyExist(final UserAlreadyExistException e) {
-        log.info("Ошибка 409 {}", e.getMessage());
-        return new ErrorResponse(e.getMessage());
-    }
-
-    @ExceptionHandler
-    @ResponseStatus(HttpStatus.CONFLICT)
-    public ErrorResponse handleFilmAlreadyExist(final FilmAlreadyExistException e) {
+    public ErrorResponse handleAlreadyExistException(final DataAlreadyExistException e) {
         log.info("Ошибка 409 {}", e.getMessage());
         return new ErrorResponse(e.getMessage());
     }
