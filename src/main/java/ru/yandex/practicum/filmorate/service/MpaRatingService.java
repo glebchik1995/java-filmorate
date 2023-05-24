@@ -10,6 +10,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MpaRatingService {
     private final MpaRatingDao mpaRatingDao;
+
     public MpaRating getRatingById(int ratingId) {
         return mpaRatingDao.getRatingById(ratingId);
     }

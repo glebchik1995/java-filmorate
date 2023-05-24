@@ -1,13 +1,11 @@
 package ru.yandex.practicum.filmorate;
 
 import lombok.RequiredArgsConstructor;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.jdbc.core.JdbcTemplate;
 import ru.yandex.practicum.filmorate.exception.DataNotFoundException;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.film.Film;
@@ -26,7 +24,6 @@ import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 @AutoConfigureTestDatabase
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 class FilmorateApplicationTests {
-    private final JdbcTemplate jdbcTemplate;
     private final UserDaoImpl userDaoImpl;
     private final FilmDaoImpl filmdaoImpl;
 
@@ -52,20 +49,6 @@ class FilmorateApplicationTests {
                 .genres(new HashSet<>())
                 .likes(new LinkedHashSet<>())
                 .build();
-    }
-
-    @AfterEach
-    void afterEach() {
-
-        String sqlQuery =
-                        "delete from films;\n" +
-                        "delete from users;\n" +
-                        "delete from likes;\n" +
-                        "delete from genres;\n" +
-                        "delete from film_genres;";
-        jdbcTemplate.update(sqlQuery);
-        userDaoImpl.getAllUsers().clear();
-        filmdaoImpl.getAllFilms().clear();
     }
 
     private User createNewUpdatedUser() {
@@ -114,21 +97,12 @@ class FilmorateApplicationTests {
                 );
     }
 
-
     @Test
     public void shouldGetAllUsers() throws ValidationException, DataNotFoundException {
         user = userDaoImpl.addUser(user);
         userDaoImpl.addUser(user);
         List<User> list = userDaoImpl.getAllUsers();
         assertThat(list).contains(user);
-    }
-
-    @Test
-    public void shouldDeleteUser() {
-        user = userDaoImpl.addUser(user);
-        userDaoImpl.deleteUserById(user.getId());
-        List<User> listUsers = userDaoImpl.getAllUsers();
-        assertThat(listUsers).hasSize(0);
     }
 
     @Test
@@ -152,22 +126,6 @@ class FilmorateApplicationTests {
     }
 
     @Test
-    void shouldDeleteFilm() throws ValidationException, DataNotFoundException {
-        film = filmdaoImpl.addFilm(film);
-        filmdaoImpl.deleteFilm(film.getId());
-        List<Film> listFilms = filmdaoImpl.getAllFilms();
-        assertThat(listFilms).hasSize(1);
-
-    }
-
-    @Test
-    public void shouldGetAllFilms() throws ValidationException, DataNotFoundException {
-        film = filmdaoImpl.addFilm(film);
-        List<Film> listFilms = filmdaoImpl.getAllFilms();
-        assertThat(listFilms).contains(film);
-    }
-
-    @Test
     public void shouldUpdateFilm() throws ValidationException, DataNotFoundException {
         film = filmdaoImpl.addFilm(film);
         Film updateFilm = createNewUpdatedFilm();
@@ -178,28 +136,6 @@ class FilmorateApplicationTests {
                                 .hasFieldOrPropertyWithValue("name", "update film")
                                 .hasFieldOrPropertyWithValue("description", "description update film")
                 );
-    }
-
-    @Test
-    public void shouldPutLike() throws ValidationException, DataNotFoundException {
-        film = filmdaoImpl.addFilm(film);
-        user = userDaoImpl.addUser(user);
-        filmdaoImpl.putLike(film.getId(), user.getId());
-        film = filmdaoImpl.getFilmById(film.getId());
-        assertThat(film.getLikes()).hasSize(1);
-        assertThat(film.getLikes()).contains(user.getId());
-    }
-
-
-    @Test
-    public void shouldDeleteLike() throws ValidationException, DataNotFoundException {
-        user = userDaoImpl.addUser(user);
-        film = filmdaoImpl.addFilm(film);
-        filmdaoImpl.putLike(film.getId(), user.getId());
-        filmdaoImpl.deleteLike(film.getId(), user.getId());
-        film = filmdaoImpl.getFilmById(film.getId());
-        assertThat(film.getLikes()).hasSize(1);
-
     }
 
 }

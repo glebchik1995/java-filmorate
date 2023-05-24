@@ -17,7 +17,6 @@ public class UserService {
     @Qualifier("UserDao")
     private final UserDao userDao;
 
-
     public void addUser(User user) {
         validate(user);
         userDao.addUser(user);
@@ -57,6 +56,7 @@ public class UserService {
     }
 
     public void validate(User user) {
+
         if (user.getLogin().contains(" ") || user.getLogin() == null) {
             throw new ValidationException("Поле с логином некорректно заполнено");
         }
