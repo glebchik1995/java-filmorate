@@ -1,25 +1,24 @@
-package ru.yandex.practicum.filmorate.model;
+package ru.yandex.practicum.filmorate.model.user;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.HashMap;
+import java.util.Map;
 
 @Getter
 @Setter
 @Builder
+@AllArgsConstructor
+@RequiredArgsConstructor
 public class User {
 
-    @NotNull(message = "Нумерация начинается с единицы")
-    private long id;
+    private int id;
 
-    private final Set<Long> friends = new HashSet<>();
+    private final Map<Integer, FriendshipStatus> friends = new HashMap<>();
 
     @NotBlank(message = "Поле с email должно быть заполнено")
     @Email(message = "Поле с email должно содержать @")
@@ -33,5 +32,4 @@ public class User {
 
     @NotNull(message = "Поле с датой рождения должно быть заполнено")
     private LocalDate birthday;
-
 }

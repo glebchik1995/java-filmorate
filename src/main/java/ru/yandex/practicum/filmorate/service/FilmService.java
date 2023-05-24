@@ -1,74 +1,56 @@
 package ru.yandex.practicum.filmorate.service;
 
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
-import ru.yandex.practicum.filmorate.model.Film;
-import ru.yandex.practicum.filmorate.storage.film.FilmStorage;
-import ru.yandex.practicum.filmorate.storage.user.UserStorage;
+import ru.yandex.practicum.filmorate.model.film.Film;
+import ru.yandex.practicum.filmorate.storage.dao.FilmDao;
 
 import java.time.LocalDate;
-import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 
 @Service
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class FilmService {
-    private final FilmStorage filmStorage;
-    private final UserStorage userStorage;
 
-    public void createFilm(Film film) {
+    @Qualifier("FilmDaoImpl")
+    private final FilmDao filmDao;
+
+    public void addFilm(Film film) {
         validate(film);
-        filmStorage.createFilm(film);
+        filmDao.addFilm(film);
     }
 
     public void updateFilm(Film film) {
         validate(film);
-        filmStorage.updateFilm(film);
+        filmDao.updateFilm(film);
     }
 
-
-    public Film getFilmById(Long filmId) {
-        return filmStorage.getFilmById(filmId);
+    public Film getFilmById(int filmId) {
+        return filmDao.getFilmById(filmId);
     }
-
 
     public List<Film> getAllFilms() {
-        return filmStorage.getAllFilms();
+        return filmDao.getAllFilms();
     }
 
-    public void deleteFilm(Long filmId) {
-        filmStorage.deleteFilm(filmId);
+    public void deleteFilm(int filmId) {
+        filmDao.deleteFilm(filmId);
     }
 
-    public List<Film> getPopular(Integer count) {
-        if (count < 1) {
-            throw new ValidationException("Количество фильмов для вывода не должно быть меньше 1");
-        }
-
-        return filmStorage
-                .getAllFilms()
-                .stream()
-                .sorted(Comparator.comparing(Film::getId).reversed())
-                .limit(count)
-                .collect(Collectors.toList());
+    public List<Film> getPopularFilms(Integer count) {
+        return filmDao.getPopularFilms(count);
     }
 
-    public void putLike(Long filmId, Long userId) {
-        userStorage.getUserById(userId);
-        Film film = filmStorage.getFilmById(filmId);
-        film.getLikes().add(userId);
+    public void putLike(int filmId, int userId) {
+        filmDao.putLike(filmId, userId);
     }
 
-    public void deleteLike(Long filmId, Long userId) {
-        final Film film = filmStorage.getFilmById(filmId);
-        userStorage.getUserById(userId);
-        filmStorage.getFilmById(filmId);
-        film.getLikes().remove(userId);
+    public void deleteLike(int filmId, int userId) {
+        filmDao.deleteLike(filmId, userId);
     }
-
 
     public void validate(Film film) {
         if (film.getReleaseDate().isBefore(LocalDate.of(1895, 12, 28))) {
