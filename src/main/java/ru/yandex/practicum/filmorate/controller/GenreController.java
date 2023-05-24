@@ -10,6 +10,7 @@ import ru.yandex.practicum.filmorate.model.film.Genre;
 import ru.yandex.practicum.filmorate.service.GenreService;
 
 import java.util.List;
+
 @Slf4j
 @RestController
 @RequestMapping("/genres")
