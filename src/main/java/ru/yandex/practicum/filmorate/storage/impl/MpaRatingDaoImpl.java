@@ -6,6 +6,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import ru.yandex.practicum.filmorate.exception.DataNotFoundException;
 import ru.yandex.practicum.filmorate.model.film.MpaRating;
 import ru.yandex.practicum.filmorate.storage.dao.MpaRatingDao;
 
@@ -48,7 +49,7 @@ public class MpaRatingDaoImpl implements MpaRatingDao {
                     .name(rs.getString(MPA_RATING_NAME))
                     .build();
         } else {
-            throw new IllegalArgumentException("Не найден  рейтинг с id = " + id);
+            throw new DataNotFoundException("Не найден  рейтинг с id = " + id);
         }
     }
 

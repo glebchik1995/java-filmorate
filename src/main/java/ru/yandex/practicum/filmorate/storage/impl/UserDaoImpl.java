@@ -112,7 +112,7 @@ public class UserDaoImpl implements UserDao {
                     .birthday(Objects.requireNonNull(rs.getDate(BIRTHDAY)).toLocalDate())
                     .build();
         } else {
-            throw new IllegalArgumentException("Пользователь с id = " + id + " не найден.");
+            throw new DataNotFoundException("Пользователь с id = " + id + " не найден.");
         }
     }
 
