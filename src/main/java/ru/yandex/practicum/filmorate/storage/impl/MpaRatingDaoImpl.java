@@ -49,7 +49,7 @@ public class MpaRatingDaoImpl implements MpaRatingDao {
                     .name(rs.getString(MPA_RATING_NAME))
                     .build();
         } else {
-            throw new DataNotFoundException("Не найден рейтинг с id = " + id);
+            throw new IllegalArgumentException("Не найден рейтинг с id = " + id);
         }
     }
 
