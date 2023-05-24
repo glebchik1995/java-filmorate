@@ -1,4 +1,4 @@
-package ru.yandex.practicum.filmorate.storage.sqlСonstant;
+package ru.yandex.practicum.filmorate.storage.сonstant;
 
 public class FieldsTable {
 
