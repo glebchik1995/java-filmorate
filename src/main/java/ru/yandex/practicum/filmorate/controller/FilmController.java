@@ -21,6 +21,7 @@ public class FilmController {
         log.info("Получен запрос на получение списка всех фильмов.");
         return filmService.getAllFilms();
     }
+
     @GetMapping("/{id}")
     public Film getFilmById(@PathVariable int id) {
         log.info("Получен запрос на получение фильма с ID={}.", id);
