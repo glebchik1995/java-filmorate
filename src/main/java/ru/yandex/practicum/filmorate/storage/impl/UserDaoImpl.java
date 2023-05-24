@@ -88,8 +88,11 @@ public class UserDaoImpl implements UserDao {
                 user.getName(),
                 user.getBirthday(),
                 user.getId());
-        if (getUserById(user.getId()) == null) {
-            throw new DataNotFoundException("Пользователь с id = " + user.getId() + " не найден.");
+        final String checkUserQuery = "SELECT * FROM users WHERE user_id = ?";
+        SqlRowSet userRows = jdbcTemplate.queryForRowSet(checkUserQuery, user.getId());
+        if (!userRows.next()) {
+            log.warn("Пользователь с идентификатором {} не найден.", user.getId());
+            throw new DataNotFoundException("Пользователь с идентификатором " + user.getId() + " не найден.");
         }
         log.debug("Обновлён пользователь c ID: " + user.getId());
         return user;

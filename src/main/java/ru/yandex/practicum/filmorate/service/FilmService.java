@@ -21,6 +21,7 @@ public class FilmService {
         validate(film);
         filmDao.addFilm(film);
     }
+
     public void updateFilm(Film film) {
         validate(film);
         filmDao.updateFilm(film);
