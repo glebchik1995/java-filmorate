@@ -1,65 +1,70 @@
 package ru.yandex.practicum.filmorate.controller;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
-import ru.yandex.practicum.filmorate.exception.UserNotFoundException;
-import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
+import ru.yandex.practicum.filmorate.service.UserService;
 
 import javax.validation.Valid;
-import java.time.LocalDate;
 import java.util.*;
 
 @Slf4j
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/users")
 public class UserController {
-    protected final Map<Long, User> users = new HashMap<>();
-    private int idGenerator = 0;
-
-    private int idPlus() {
-        return ++idGenerator;
-    }
+    private final UserService userService;
 
     @PostMapping
     public User createUser(@Valid @RequestBody User user) {
-        validate(user);
-        user.setId(idPlus());
-        users.put(user.getId(), user);
+        userService.createUser(user);
         log.info("Пользователь {} успешно добавлен", user);
         return user;
     }
 
     @PutMapping
     public User updateUser(@Valid @RequestBody User user) {
-        validate(user);
-        if (!users.containsKey(user.getId())) {
-            throw new
-                    UserNotFoundException("Пользователь не найден");
-        }
-        users.put(user.getId(), user);
+        userService.updateUser(user);
         log.info("Пользователь {} успешно обновлен", user);
         return user;
     }
 
     @GetMapping
-    public Collection<User> getAllUsers() {
-        log.info("На текущий момент " + LocalDate.now() +
-                " количество пользователей списке составляет: " + users.size());
-        return users.values();
+    public List<User> getAllUsers() {
+        log.info("Получен запрос на получение списка всех пользователей.");
+        return userService.getAllUsers();
     }
 
-    public void validate(User user) {
-        if (user.getLogin().contains(" ") || user.getLogin() == null) {
-            throw new ValidationException("Поле с логином некорректно заполнено");
+    @GetMapping("/{id}")
+    public User getUserById(@PathVariable Long id) {
+        log.info("Получен запрос на получение пользователя с ID={}.", id);
+        return userService.getUserById(id);
+    }
 
-        }
-        if (user.getName() == null || user.getName().isBlank()) {
-            user.setName(user.getLogin());
-        }
+    @GetMapping("/{id}/friends")
+    public List<User> getFriends(@PathVariable Long id) {
+        log.info("Получен запрос на получение списка пользователей, которые являются друзьями пользователя с ID={}.",
+                id);
+        return userService.getFriends(id);
+    }
 
-        if (user.getBirthday().isAfter(LocalDate.now())) {
-            throw new ValidationException("Дата рождения не может быть в будущем");
-        }
+    @GetMapping("/{id}/friends/common/{otherId}")
+    public List<User> getMutualFriends(@PathVariable Long id, @PathVariable Long otherId) {
+        log.info("Получен запрос на получение списка общих друзей пользователя с ID={} и пользователя с ID={}.",
+                id, otherId);
+        return userService.getMutualFriends(id, otherId);
+    }
+
+    @PutMapping("/{id}/friends/{friendId}")
+    public void addFriend(@PathVariable Long id, @PathVariable Long friendId) {
+        userService.addFriend(id, friendId);
+        log.info("Пользователь с ID={} добавляет в список друзей пользователя с ID={}.", friendId, id);
+    }
+
+    @DeleteMapping("/{id}/friends/{friendId}")
+    public void deleteFriend(@PathVariable Long id, @PathVariable Long friendId) {
+        userService.deleteFriend(id, friendId);
+        log.info("Пользователь с ID={} удаляет из списка друзей пользователя с ID={}.", friendId, id);
     }
 }
