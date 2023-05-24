@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import static ru.yandex.practicum.filmorate.storage.fields.FieldsTable.*;
+import static ru.yandex.practicum.filmorate.fields.FieldsTable.*;
 
 
 @Slf4j

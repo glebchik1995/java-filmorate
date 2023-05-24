@@ -1,4 +1,4 @@
-package ru.yandex.practicum.filmorate.storage.fields;
+package ru.yandex.practicum.filmorate.fields;
 
 public class FieldsTable {
 

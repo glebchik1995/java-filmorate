@@ -18,7 +18,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 
-import static ru.yandex.practicum.filmorate.storage.fields.FieldsTable.*;
+import static ru.yandex.practicum.filmorate.fields.FieldsTable.*;
 
 @Slf4j
 @Repository
