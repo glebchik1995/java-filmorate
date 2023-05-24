@@ -45,7 +45,7 @@ class FilmorateApplicationTests {
                 .description("description new film")
                 .releaseDate(LocalDate.of(1995, 10, 5))
                 .duration(111)
-                .mpa(new MpaRating(1, "NC-17", "Лицам до 18 лет просмотр запрещён"))
+                .mpa(new MpaRating(1, "NC-17", "Р›РёС†Р°Рј РґРѕ 18 Р»РµС‚ РїСЂРѕСЃРјРѕС‚СЂ Р·Р°РїСЂРµС‰С‘РЅ"))
                 .genres(new HashSet<>())
                 .likes(new LinkedHashSet<>())
                 .build();
@@ -67,7 +67,7 @@ class FilmorateApplicationTests {
                 .description("description update film")
                 .releaseDate(LocalDate.of(2000, 1, 1))
                 .duration(99)
-                .mpa(new MpaRating(1, "G", "У фильма нет возрастных ограничений"))
+                .mpa(new MpaRating(1, "G", "РЈ С„РёР»СЊРјР° РЅРµС‚ РІРѕР·СЂР°СЃС‚РЅС‹С… РѕРіСЂР°РЅРёС‡РµРЅРёР№"))
                 .genres(new HashSet<>())
                 .likes(new LinkedHashSet<>())
                 .build();
