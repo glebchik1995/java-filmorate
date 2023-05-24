@@ -14,8 +14,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-import static ru.yandex.practicum.filmorate.storage.сonstant.FieldsTable.GENRE_ID;
-import static ru.yandex.practicum.filmorate.storage.сonstant.FieldsTable.GENRE_NAME;
+import static ru.yandex.practicum.filmorate.storage.fields.FieldsTable.GENRE_ID;
+import static ru.yandex.practicum.filmorate.storage.fields.FieldsTable.GENRE_NAME;
 
 @Slf4j
 @Repository

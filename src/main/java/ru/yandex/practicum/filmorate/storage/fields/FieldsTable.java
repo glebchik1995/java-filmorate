@@ -1,4 +1,4 @@
-package ru.yandex.practicum.filmorate.storage.сonstant;
+package ru.yandex.practicum.filmorate.storage.fields;
 
 public class FieldsTable {
 
@@ -17,4 +17,5 @@ public class FieldsTable {
     public static final String MPA_RATING_DESCRIPTION = "description";
     public static final String MPA_RATING_ID = "ratings_mpa_id";
     public static final String MPA_RATING_NAME = "mpa_name";
+
 }
