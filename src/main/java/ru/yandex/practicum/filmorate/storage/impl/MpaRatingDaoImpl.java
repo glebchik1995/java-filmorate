@@ -37,6 +37,7 @@ public class MpaRatingDaoImpl implements MpaRatingDao {
         log.info("Получены все рейтинги MPA: {}.", listMPA);
         return listMPA;
     }
+
     @Transactional
     @Override
     public MpaRating getRatingById(int id) {
@@ -51,6 +52,7 @@ public class MpaRatingDaoImpl implements MpaRatingDao {
             throw new DataNotFoundException("Не найден рейтинг с id = " + id);
         }
     }
+
     private MpaRating makeMPA(ResultSet rs, int rowNum) throws SQLException {
         return MpaRating.builder()
                 .id(rs.getInt(MPA_RATING_ID))

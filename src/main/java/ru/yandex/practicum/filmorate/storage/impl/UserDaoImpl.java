@@ -168,6 +168,7 @@ public class UserDaoImpl implements UserDao {
     @Transactional
     @Override
     public void addFriends(int userId, int friendId) {
+
         if (userId < 1) {
             throw new DataNotFoundException("Пользователь с ID: " + userId + " не найден");
         }
