@@ -10,7 +10,6 @@ import ru.yandex.practicum.filmorate.storage.dao.FilmDao;
 import java.time.LocalDate;
 import java.util.List;
 
-
 @Service
 @AllArgsConstructor
 public class FilmService {
@@ -22,7 +21,6 @@ public class FilmService {
         validate(film);
         filmDao.addFilm(film);
     }
-
     public void updateFilm(Film film) {
         validate(film);
         filmDao.updateFilm(film);
@@ -53,6 +51,7 @@ public class FilmService {
     }
 
     public void validate(Film film) {
+
         if (film.getReleaseDate().isBefore(LocalDate.of(1895, 12, 28))) {
             throw new ValidationException("Дата релиза не может быть раньше 28.12.1895");
         }
