@@ -23,7 +23,7 @@ public class Genre {
     public boolean equals(Object obj) {
         if (this == obj) return true;
         if (obj == null || getClass() != obj.getClass()) return false;
-        Genre genre =(Genre) obj;
+        Genre genre = (Genre) obj;
         return Objects.equals(id, genre.id);
     }
 }
