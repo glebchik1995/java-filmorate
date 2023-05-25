@@ -1,10 +1,10 @@
 package ru.yandex.practicum.filmorate.error;
 
-public class ErrorResponse {
-    String error;
+import lombok.Data;
 
-    public ErrorResponse(String error) {
-        this.error = error;
-    }
+@Data
+public class ErrorResponse {
+    private final String error;
+
 
 }
