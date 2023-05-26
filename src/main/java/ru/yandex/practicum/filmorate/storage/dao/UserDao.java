@@ -1,6 +1,6 @@
 package ru.yandex.practicum.filmorate.storage.dao;
 
-import ru.yandex.practicum.filmorate.model.user.User;
+import ru.yandex.practicum.filmorate.model.User;
 
 import java.util.List;
 
@@ -12,15 +12,16 @@ public interface UserDao {
 
     List<User> getAllUsers();
 
-    User getUserById(int userId);
+    User getUserById(long userId);
 
-    void deleteUserById(int userId);
+    void deleteUserById(long userId);
 
-    List<User> getUsersFriendsById(int id);
+    List<User> getFriendById(long id);
 
-    void deleteFriend(int id, int friendId);
+    void deleteFriend(long id, long friendId);
 
-    List<User> getMutualFriends(int id, int otherId);
+    List<User> getMutualFriends(long id, long otherId);
 
-    void addFriends(int id, int friendId);
+    void addFriend(long id, long friendId);
+
 }

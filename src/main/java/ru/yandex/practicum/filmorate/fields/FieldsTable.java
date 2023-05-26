@@ -14,8 +14,7 @@ public class FieldsTable {
     public static final String DURATION = "duration";
     public static final String GENRE_ID = "genre_id";
     public static final String GENRE_NAME = "genre_name";
-    public static final String MPA_RATING_DESCRIPTION = "description";
     public static final String MPA_RATING_ID = "ratings_mpa_id";
-    public static final String MPA_RATING_NAME = "mpa_name";
+    public static final String MPA_RATING_NAME = "ratings_mpa_name";
 
 }

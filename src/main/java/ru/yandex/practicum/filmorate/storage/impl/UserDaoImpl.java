@@ -1,183 +1,162 @@
 package ru.yandex.practicum.filmorate.storage.impl;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 import ru.yandex.practicum.filmorate.exception.DataNotFoundException;
-import ru.yandex.practicum.filmorate.model.user.User;
+import ru.yandex.practicum.filmorate.mapper.UserMapper;
+import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.dao.UserDao;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.HashMap;
+import java.sql.Date;
+import java.sql.PreparedStatement;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-
-import static ru.yandex.practicum.filmorate.fields.FieldsTable.*;
-
 
 @Slf4j
 @Repository
+@RequiredArgsConstructor
 public class UserDaoImpl implements UserDao {
 
     private final JdbcTemplate jdbcTemplate;
+    private final UserMapper userRowMapper = new UserMapper();
 
-    @Autowired
-    public UserDaoImpl(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
-    }
-
-    private User makeUser(ResultSet rs) throws SQLException {
-        return User.builder()
-                .id(rs.getInt(USER_ID))
-                .name(rs.getString(USER_NAME))
-                .email(rs.getString(EMAIL))
-                .login(rs.getString(LOGIN))
-                .birthday(rs.getDate(BIRTHDAY).toLocalDate())
-                .build();
-    }
-
-    @Transactional
     @Override
     public List<User> getAllUsers() {
         log.debug("getAllUsers().");
-        String sqlQuery = "SELECT * FROM users;";
-        List<User> listUsers = jdbcTemplate.query(sqlQuery, (rs, rowNum) -> makeUser(rs));
-        log.info("Получен список всех пользователей: {}.", listUsers);
-        return listUsers;
+        String query = "SELECT * "
+                + "FROM users;";
+        return jdbcTemplate.query(query, userRowMapper);
     }
-
-    @Transactional
+    
     @Override
     public User addUser(User user) {
         log.debug("addUser({}).", user);
-        SimpleJdbcInsert simpleJdbcInsert = new SimpleJdbcInsert(jdbcTemplate)
-                .withTableName("users")
-                .usingGeneratedKeyColumns(USER_ID);
-        int result = simpleJdbcInsert.executeAndReturnKey(toMap(user)).intValue();
-        user.setId(result);
-        log.info("В хранилище сохранен пользователь: {}.", result);
+        String sqlQuery = "INSERT INTO users(login,name, email, birthday) " +
+                "VALUES(?,?,?,?)";
+        GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();
+        jdbcTemplate.update(connection -> {
+                    PreparedStatement ps = connection.prepareStatement(sqlQuery, new String[]{"user_id"});
+                    ps.setString(1, user.getLogin());
+                    ps.setString(2, user.getName());
+                    ps.setString(3, user.getEmail());
+                    ps.setDate(4, Date.valueOf(user.getBirthday()));
+                    return ps;
+                },
+                keyHolder);
+        if (keyHolder.getKey() != null) {
+            user.setId(keyHolder.getKey().intValue());
+        }
         return user;
 
     }
-
-    private Map<String, Object> toMap(User user) {
-        Map<String, Object> values = new HashMap<>();
-        values.put(EMAIL, user.getEmail());
-        values.put(LOGIN, user.getLogin());
-        values.put(USER_NAME, user.getName());
-        values.put(BIRTHDAY, user.getBirthday());
-        return values;
-    }
-
-    @Transactional
+    
     @Override
     public User updateUser(User user) {
         log.debug("updateUser({}).", user);
-        String sqlQuery = "UPDATE users "
-                + "SET email = ?, login = ?, name = ?, birthday = ? "
-                + "WHERE user_id = ?;";
-        jdbcTemplate.update(sqlQuery,
-                user.getEmail(),
-                user.getLogin(),
-                user.getName(),
-                user.getBirthday(),
-                user.getId());
-        final String checkUserQuery = "SELECT * FROM users WHERE user_id = ?";
-        SqlRowSet userRows = jdbcTemplate.queryForRowSet(checkUserQuery, user.getId());
-        if (!userRows.next()) {
-            log.warn("Пользователь с идентификатором {} не найден.", user.getId());
-            throw new DataNotFoundException("Пользователь с идентификатором " + user.getId() + " не найден.");
-        }
-        log.debug("Обновлён пользователь c ID: " + user.getId());
+        check(user.getId());
+        String sql = "UPDATE users "
+                + "SET (login, name, email, birthday) = (?,?,?,?) " +
+                "WHERE user_id=?";
+        jdbcTemplate.update(sql, user.getLogin(), user.getName(), user.getEmail(),
+                user.getBirthday(), user.getId());
+        log.info("Пользователь с ID:{} обновлен ", user.getId());
         return user;
     }
 
-    @Transactional
     @Override
-    public User getUserById(int id) {
+    public User getUserById(long id) {
         log.debug("getUserById({}).", id);
-        String sqlQuery = "SELECT * FROM users WHERE user_id = ?;";
-        SqlRowSet rs = jdbcTemplate.queryForRowSet(sqlQuery, id);
-        if (rs.next()) {
-            return User.builder()
-                    .id(rs.getInt(USER_ID))
-                    .email(rs.getString(EMAIL))
-                    .login(rs.getString(LOGIN))
-                    .name(rs.getString(USER_NAME))
-                    .birthday(Objects.requireNonNull(rs.getDate(BIRTHDAY)).toLocalDate())
-                    .build();
-        } else {
-            throw new DataNotFoundException("Пользователь с id = " + id + " не найден.");
-        }
+        check(id);
+        String sql = "SELECT * "
+                + "FROM users "
+                + "WHERE user_id = ?";
+        log.info("Получаем пользователя с ID:{}", id);
+        return jdbcTemplate.queryForObject(sql, userRowMapper, id);
     }
-
-    @Transactional
+    
     @Override
-    public void deleteUserById(int id) {
+    public void deleteUserById(long id) {
         log.debug("deleteUser({}).", id);
-        String sqlQuery = "DELETE FROM users WHERE user_id = ?;";
-        if (id > 0) {
-            jdbcTemplate.update(sqlQuery, id);
-            log.debug("Удален пользователь с ID: {}", id);
-        } else
-            throw new DataNotFoundException("Пользователь с ID=" + id + " не найден!");
+        check(id);
+        String sql = "DELETE FROM users " +
+                "WHERE user_id = ?";
+        jdbcTemplate.update(sql, id);
+        log.info("Пользователь c ID: {} удален", id);
     }
-
-    @Transactional
+    
     @Override
-    public List<User> getUsersFriendsById(int id) {
-        log.debug("getUsersFriends({}).", id);
-        String sqlQuery = "select u.user_id, u.email, u.name, u.login, u.birthday " +
-                "from friends as f left join users as u " +
-                "on f.other_user_id = u.user_id where f.user_id = ?" +
-                "order by u.user_id";
+    public void addFriend(long userId, long friendId) {
+        log.debug("deleteLike({}, {}).", userId, friendId);
+        check(userId);
+        check(friendId);
+        String sqlQuery = "INSERT INTO friends (user_id, other_user_id, status) VALUES (?, ?, ?)";
+        String checkQuery = "SELECT * FROM friends WHERE user_id = ? AND other_user_id = ?";
 
-        List<User> friends = jdbcTemplate.query(sqlQuery, (rs, rowNum) -> makeUser(rs), id);
-        log.info("Получен пользователь c ID={}", id);
-        return friends;
-    }
+        SqlRowSet userRows = jdbcTemplate.queryForRowSet(checkQuery, friendId, userId);
 
-    @Transactional
-    @Override
-    public void deleteFriend(int id, int friendId) {
-        log.debug("deleteFriend({}, {}).", id, friendId);
-        String sqlQuery = "DELETE FROM friends WHERE user_id = ? AND other_user_id = ? ;";
-        jdbcTemplate.update(sqlQuery, id, friendId);
-        log.debug("Пользователь с ID: {} удалил из друзей Пользователь с ID: {}", id, friendId);
-    }
-
-    @Transactional
-    @Override
-    public List<User> getMutualFriends(int userId, int otherUserId) {
-        log.debug("getMutualFriends({}, {}).", userId, otherUserId);
-        String query = "SELECT u.* FROM friends f "
-                + "JOIN users u ON f.other_user_id = u.user_id "
-                + "WHERE f.user_id = ? OR f.user_id = ? AND status = true "
-                + "GROUP BY f.other_user_id "
-                + "HAVING COUNT(f.user_id) > 1;";
-        List<User> listUsers = jdbcTemplate.query(query, (rs, rowNum) -> makeUser(rs), userId, otherUserId);
-        log.info("Получен список всех общих друзей:{}.", listUsers);
-        return listUsers;
-    }
-
-    @Transactional
-    @Override
-    public void addFriends(int userId, int friendId) {
-
-        if (userId < 1) {
-            throw new DataNotFoundException("Пользователь с ID: " + userId + " не найден");
-        }
-        if (friendId < 1) {
-            throw new DataNotFoundException("Пользователь с ID: " + friendId + " не найден");
+        if (!userRows.next()) {
+            jdbcTemplate.update(sqlQuery, userId, friendId, false);
+            log.info("Пользователь c ID: {} отправил запрос на добавления в друзья пользователю c ID {}",
+                    userId, friendId);
+        } else {
+            jdbcTemplate.update(sqlQuery, userId, friendId, true);
+            jdbcTemplate.update(sqlQuery, friendId, userId, true);
+            log.info("Пользователь c ID: {} принял заявку в друзья от пользователя c ID {}", userId, friendId);
         }
 
-        String query = "INSERT INTO FRIENDS(user_id, other_user_id, status) VALUES (?,?,true);";
-        jdbcTemplate.update(query, userId, friendId);
+        getUserById(userId);
+    }
+
+    @Override
+    public List<User> getFriendById(long id) {
+        log.debug("getMutualFriends({}).", id);
+        check(id);
+        String sql = "SELECT * " +
+                "FROM users " +
+                "WHERE user_id IN (SELECT other_user_id FROM friends WHERE user_id=?)";
+        return jdbcTemplate.query(sql, userRowMapper, id);
+    }
+
+    @Override
+    public void deleteFriend(long userId, long unFriendId) {
+        check(userId);
+        check(unFriendId);
+        String sql = "DELETE friends "
+                + "WHERE user_id = ? "
+                + "AND other_user_id = ?";
+        jdbcTemplate.update(sql, userId, unFriendId);
+        log.info("Пользователь c ID: {} удалил из друзей пользователя c ID {}", userId, unFriendId);
+
+    }
+
+    @Override
+    public List<User> getMutualFriends(long userId, long otherUserId) {
+        check(userId);
+        check(otherUserId);
+        String sqlQuery = "SELECT u.* FROM friends AS f " +
+                "LEFT JOIN users u ON u.user_id = f.other_user_id " +
+                "WHERE f.user_id = ? " +
+                "AND f.other_user_id IN " +
+                "( " +
+                "SELECT f.other_user_id " +
+                "FROM friends AS f " +
+                "LEFT JOIN users AS u ON u.user_id = f.other_user_id " +
+                "WHERE f.user_id = ?" +
+                ")";
+        log.info("Получаем общих друзей у пользователя с ID: {} и пользователя c ID: {} ", userId, otherUserId);
+        return jdbcTemplate.query(sqlQuery, userRowMapper, userId, otherUserId);
+    }
+
+    private void check(long userId) {
+        String sqlQuery = "SELECT * FROM users WHERE user_id = ?";
+        SqlRowSet userRows = jdbcTemplate.queryForRowSet(sqlQuery, userId);
+
+        if (!userRows.next()) {
+            log.warn("Пользователь с идентификатором {} не найден.", userId);
+            throw new DataNotFoundException("Пользователь с идентификатором " + userId + " не найден.");
+        }
     }
 }

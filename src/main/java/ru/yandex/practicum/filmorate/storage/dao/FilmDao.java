@@ -1,25 +1,28 @@
 package ru.yandex.practicum.filmorate.storage.dao;
 
-import ru.yandex.practicum.filmorate.model.film.Film;
+import ru.yandex.practicum.filmorate.model.Film;
 
+import java.util.Collection;
 import java.util.List;
 
 public interface FilmDao {
 
-    List<Film> getAllFilms();
+    Collection<Film> getAllFilms();
 
     Film addFilm(Film film);
 
     Film updateFilm(Film film);
 
-    Film getFilmById(int filmId);
+    Film getFilmById(long filmId);
 
-    List<Film> getPopularFilms(int count);
+    Collection<Film> getPopularFilms(long count);
 
-    void deleteFilm(int filmId);
+    void deleteFilm(long filmId);
 
-    void putLike(int filmId, int userId);
+    void deleteFilmGenreById(long id);
 
-    void deleteLike(int filmId, int userId);
+    void addLike(long filmId, long userId);
+
+    void deleteLike(long filmId, long userId);
 
 }
