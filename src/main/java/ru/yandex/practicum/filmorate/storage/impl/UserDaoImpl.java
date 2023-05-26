@@ -29,8 +29,9 @@ public class UserDaoImpl implements UserDao {
         String query = "SELECT * "
                 + "FROM users;";
         return jdbcTemplate.query(query, userRowMapper);
+
     }
-    
+
     @Override
     public User addUser(User user) {
         log.debug("addUser({}).", user);
@@ -52,7 +53,7 @@ public class UserDaoImpl implements UserDao {
         return user;
 
     }
-    
+
     @Override
     public User updateUser(User user) {
         log.debug("updateUser({}).", user);
@@ -64,6 +65,7 @@ public class UserDaoImpl implements UserDao {
                 user.getBirthday(), user.getId());
         log.info("Пользователь с ID:{} обновлен ", user.getId());
         return user;
+
     }
 
     @Override
@@ -75,8 +77,9 @@ public class UserDaoImpl implements UserDao {
                 + "WHERE user_id = ?";
         log.info("Получаем пользователя с ID:{}", id);
         return jdbcTemplate.queryForObject(sql, userRowMapper, id);
+
     }
-    
+
     @Override
     public void deleteUserById(long id) {
         log.debug("deleteUser({}).", id);
@@ -85,8 +88,9 @@ public class UserDaoImpl implements UserDao {
                 "WHERE user_id = ?";
         jdbcTemplate.update(sql, id);
         log.info("Пользователь c ID: {} удален", id);
+
     }
-    
+
     @Override
     public void addFriend(long userId, long friendId) {
         log.debug("deleteLike({}, {}).", userId, friendId);
@@ -108,6 +112,7 @@ public class UserDaoImpl implements UserDao {
         }
 
         getUserById(userId);
+
     }
 
     @Override
@@ -148,6 +153,7 @@ public class UserDaoImpl implements UserDao {
                 ")";
         log.info("Получаем общих друзей у пользователя с ID: {} и пользователя c ID: {} ", userId, otherUserId);
         return jdbcTemplate.query(sqlQuery, userRowMapper, userId, otherUserId);
+
     }
 
     private void check(long userId) {
