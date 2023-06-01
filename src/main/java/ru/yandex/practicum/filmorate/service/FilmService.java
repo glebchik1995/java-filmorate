@@ -1,87 +1,65 @@
 package ru.yandex.practicum.filmorate.service;
 
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
-import ru.yandex.practicum.filmorate.storage.film.FilmStorage;
-import ru.yandex.practicum.filmorate.storage.user.UserStorage;
+import ru.yandex.practicum.filmorate.storage.dao.FilmDao;
 
-import java.time.LocalDate;
-import java.util.Comparator;
+import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
-
 
 @Service
-@RequiredArgsConstructor
-public class FilmService {
-    private final FilmStorage filmStorage;
-    private final UserStorage userStorage;
+@AllArgsConstructor
+public class FilmService implements FilmDao {
 
-    public void createFilm(Film film) {
-        validate(film);
-        filmStorage.createFilm(film);
+    private final FilmDao filmDao;
+
+    public Film addFilm(Film film) {
+        return filmDao.addFilm(film);
     }
 
-    public void updateFilm(Film film) {
-        validate(film);
-        filmStorage.updateFilm(film);
+    public Film updateFilm(Film film) {
+        return filmDao.updateFilm(film);
     }
 
-
-    public Film getFilmById(Long filmId) {
-        return filmStorage.getFilmById(filmId);
+    public Film getFilmById(long filmId) {
+        return filmDao.getFilmById(filmId);
     }
 
-
-    public List<Film> getAllFilms() {
-        return filmStorage.getAllFilms();
+    @Override
+    public List<Film> getPopularFilms(long count) {
+        return null;
     }
 
-    public void deleteFilm(Long filmId) {
-        filmStorage.deleteFilm(filmId);
+    public Collection<Film> getAllFilms() {
+        return filmDao.getAllFilms();
     }
 
-    public List<Film> getPopular(Integer count) {
-        if (count < 1) {
-            throw new ValidationException("Количество фильмов для вывода не должно быть меньше 1");
-        }
-
-        return filmStorage
-                .getAllFilms()
-                .stream()
-                .sorted(Comparator.comparing(Film::getId).reversed())
-                .limit(count)
-                .collect(Collectors.toList());
+    public void deleteFilm(long filmId) {
+        filmDao.deleteFilm(filmId);
     }
 
-    public void putLike(Long filmId, Long userId) {
-        userStorage.getUserById(userId);
-        Film film = filmStorage.getFilmById(filmId);
-        film.getLikes().add(userId);
+    @Override
+    public void deleteFilmGenreById(long id) {
+        filmDao.deleteFilmGenreById(id);
     }
 
-    public void deleteLike(Long filmId, Long userId) {
-        final Film film = filmStorage.getFilmById(filmId);
-        userStorage.getUserById(userId);
-        filmStorage.getFilmById(filmId);
-        film.getLikes().remove(userId);
+    @Override
+    public void addLike(long filmId, long userId) {
+        filmDao.addLike(filmId, userId);
+    }
+
+    public Collection<Film> getPopularFilms(Integer count) {
+        return filmDao.getPopularFilms(count);
+    }
+
+    public void putLike(long filmId, long userId) {
+        filmDao.addLike(filmId, userId);
+    }
+
+    public void deleteLike(long filmId, long userId) {
+        filmDao.deleteLike(filmId, userId);
     }
 
 
-    public void validate(Film film) {
-        if (film.getReleaseDate().isBefore(LocalDate.of(1895, 12, 28))) {
-            throw new ValidationException("Дата релиза не может быть раньше 28.12.1895");
-        }
-        if (film.getDescription().length() < 1 || film.getDescription().length() > 200) {
-            throw new ValidationException("Количество символов должно быть больше 0 и не превышать 200");
-        }
-        if (film.getDuration() < 0) {
-            throw new ValidationException("Продолжительность не может быть отрицательной");
-        }
-        if (film.getName().isEmpty() || film.getName().isBlank()) {
-            throw new ValidationException("Поле с названием фильма должно быть заполнено");
-        }
-    }
 }

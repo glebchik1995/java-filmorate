@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.client.HttpServerErrorException;
 import ru.yandex.practicum.filmorate.exception.*;
 
 @Slf4j
@@ -26,7 +27,7 @@ public class ErrorHandler {
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public ErrorResponse handleIllegalArgumentException(final IllegalArgumentException e) {
+    public ErrorResponse handleIllegalArgumentException(final HttpServerErrorException e) {
         log.info("Ошибка 500 {}", e.getMessage());
         return new ErrorResponse(e.getMessage());
     }

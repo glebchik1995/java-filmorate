@@ -2,87 +2,60 @@ package ru.yandex.practicum.filmorate.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
-import ru.yandex.practicum.filmorate.storage.user.UserStorage;
+import ru.yandex.practicum.filmorate.storage.dao.UserDao;
 
-import java.time.LocalDate;
 import java.util.*;
 
 @Service
 @RequiredArgsConstructor
-public class UserService {
-    private final UserStorage userStorage;
+public class UserService implements UserDao {
 
-    public void createUser(User user) {
-        validate(user);
-        userStorage.createUser(user);
+    private final UserDao userDao;
+
+    @Override
+    public User addUser(User user) {
+        return userDao.addUser(user);
     }
 
-    public void updateUser(User user) {
-        validate(user);
-        userStorage.updateUser(user);
+    @Override
+    public User updateUser(User user) {
+        return userDao.updateUser(user);
     }
 
+    @Override
     public List<User> getAllUsers() {
-        return userStorage.getAllUsers();
+        return userDao.getAllUsers();
     }
 
-    public User getUserById(Long id) {
-        return userStorage.getUserById(id);
+    @Override
+    public User getUserById(long userId) {
+        return userDao.getUserById(userId);
     }
 
-    public List<User> getFriends(Long userId) {
-        getUserById(userId);
-        List<User> friendsList = new ArrayList<>();
-        for (Long friendId : userStorage.getUserById(userId).getFriends()) {
-            User friendById = userStorage.getUserById(friendId);
-            friendsList.add(friendById);
-        }
-        return friendsList;
+    @Override
+    public void deleteUserById(long userId) {
+        userDao.deleteUserById(userId);
     }
 
-    public void addFriend(Long userId, Long friendId) {
-        final User user = userStorage.getUserById(userId);
-        final User friend = userStorage.getUserById(friendId);
-        userStorage.getUserById(friendId);
-        user.getFriends().add(friendId);
-        friend.getFriends().add(userId);
+    @Override
+    public List<User> getFriendById(long friendId) {
+        return userDao.getFriendById(friendId);
     }
 
-    public void deleteFriend(Long userId, Long friendId) {
-        final User user = userStorage.getUserById(userId);
-        final User friend = userStorage.getUserById(friendId);
-        userStorage.getUserById(friendId);
-        user.getFriends().remove(friendId);
-        friend.getFriends().remove(userId);
+    @Override
+    public void deleteFriend(long userId, long friendId) {
+        userDao.deleteFriend(userId, friendId);
     }
 
-    public List<User> getMutualFriends(Long userId, Long otherId) {
-        final User firstUser = userStorage.getUserById(userId);
-        final User secondUser = userStorage.getUserById(otherId);
-        Set<Long> intersections = new HashSet<>(firstUser.getFriends());
-        intersections.retainAll(secondUser.getFriends());
-        List<User> mutualFriends = new ArrayList<>();
-        for (Long intersection : intersections) {
-            mutualFriends.add(userStorage.getUserById(intersection));
-        }
-        return mutualFriends;
+    @Override
+    public List<User> getMutualFriends(long userId, long otherId) {
+        return userDao.getMutualFriends(userId, otherId);
     }
 
-    public void validate(User user) {
-        if (user.getLogin().contains(" ") || user.getLogin() == null) {
-            throw new ValidationException("Поле с логином некорректно заполнено");
-        }
-        if (user.getName() == null || user.getName().isBlank()) {
-            user.setName(user.getLogin());
-        }
-        if (!user.getEmail().contains("@")) {
-            throw new ValidationException("Поле с e-mail некорректно заполнено");
-        }
-
-        if (user.getBirthday().isAfter(LocalDate.now())) {
-            throw new ValidationException("Дата рождения не может быть в будущем времени");
-        }
+    @Override
+    public void addFriend(long id, long friendId) {
+        userDao.addFriend(id, friendId);
     }
+
 }

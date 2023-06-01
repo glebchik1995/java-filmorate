@@ -1,12 +1,8 @@
 package ru.yandex.practicum.filmorate.model;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.*;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
@@ -14,24 +10,29 @@ import java.util.Set;
 @Getter
 @Setter
 @Builder
+@AllArgsConstructor
+@RequiredArgsConstructor
 public class User {
 
-    @NotNull(message = "Нумерация начинается с единицы")
+    Set<Long> friendsList = new HashSet<>();
+
+    @EqualsAndHashCode.Exclude
+    @NotNull(message = "!= null")
     private long id;
 
-    private final Set<Long> friends = new HashSet<>();
-
-    @NotBlank(message = "Поле с email должно быть заполнено")
-    @Email(message = "Поле с email должно содержать @")
+    @NotBlank(message = "email symbol > 0")
+    @Email(message = "@")
     private String email;
 
-    @NotNull(message = "Поле с логином должно быть заполнено")
-    @NotBlank(message = "Поле с логином не должно содержать пробелы")
+    @NotNull(message = "!= null")
+    @NotBlank(message = "login symbol > 0")
+    @Size(max = 50, message = "size < 50")
     private String login;
 
+    @Size(max = 50, message = "size < 50")
     private String name;
 
-    @NotNull(message = "Поле с датой рождения должно быть заполнено")
+    @NotNull(message = "!= null")
+    @PastOrPresent(message = "should not be in the future")
     private LocalDate birthday;
-
 }
