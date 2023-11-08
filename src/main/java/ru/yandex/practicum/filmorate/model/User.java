@@ -1,38 +1,49 @@
 package ru.yandex.practicum.filmorate.model;
 
 import lombok.*;
+import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.*;
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Getter
 @Setter
 @Builder
+@ToString
 @AllArgsConstructor
 @RequiredArgsConstructor
+@EqualsAndHashCode
 public class User {
 
-    Set<Long> friendsList = new HashSet<>();
+    @PositiveOrZero
+    private Long id;
 
-    @EqualsAndHashCode.Exclude
-    @NotNull(message = "!= null")
-    private long id;
-
-    @NotBlank(message = "email symbol > 0")
-    @Email(message = "@")
+    @NotBlank
+    @Length(max = 255)
+    @Email
     private String email;
 
-    @NotNull(message = "!= null")
-    @NotBlank(message = "login symbol > 0")
-    @Size(max = 50, message = "size < 50")
+    @NotNull
+    @NotBlank
+    @Length(max = 255)
     private String login;
 
-    @Size(max = 50, message = "size < 50")
+    @Length(max = 255)
     private String name;
 
-    @NotNull(message = "!= null")
-    @PastOrPresent(message = "should not be in the future")
+    @NotNull
+    @PastOrPresent
     private LocalDate birthday;
+
+    private final Set<Long> friendsId = new HashSet<>();
+
+    public Map<String, Object> toMap() {
+        Map<String, Object> values = new HashMap<>();
+        values.put("email", email);
+        values.put("login", login);
+        values.put("name", name);
+        values.put("birthday", birthday);
+        return values;
+    }
 }

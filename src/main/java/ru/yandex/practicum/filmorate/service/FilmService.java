@@ -1,65 +1,33 @@
 package ru.yandex.practicum.filmorate.service;
 
-import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.model.Film;
-import ru.yandex.practicum.filmorate.storage.dao.FilmDao;
 
-import java.util.Collection;
 import java.util.List;
 
-@Service
-@AllArgsConstructor
-public class FilmService implements FilmDao {
+public interface FilmService {
 
-    private final FilmDao filmDao;
+    List<Film> getAllFilms();
 
-    public Film addFilm(Film film) {
-        return filmDao.addFilm(film);
-    }
+    Film getFilmById(Long id);
 
-    public Film updateFilm(Film film) {
-        return filmDao.updateFilm(film);
-    }
+    Film createFilm(Film film);
 
-    public Film getFilmById(long filmId) {
-        return filmDao.getFilmById(filmId);
-    }
+    Film updateFilm(Film film);
 
-    @Override
-    public List<Film> getPopularFilms(long count) {
-        return null;
-    }
+    Film addUserLike(Long id, Long userId);
 
-    public Collection<Film> getAllFilms() {
-        return filmDao.getAllFilms();
-    }
+    Film deleteUsersLike(Long id, Long userId);
 
-    public void deleteFilm(long filmId) {
-        filmDao.deleteFilm(filmId);
-    }
+    void deleteFilmById(Long id);
 
-    @Override
-    public void deleteFilmGenreById(long id) {
-        filmDao.deleteFilmGenreById(id);
-    }
+    List<Film> getPopularsFilms(Integer count, Long genreId, Integer year);
 
-    @Override
-    public void addLike(long filmId, long userId) {
-        filmDao.addLike(filmId, userId);
-    }
+    List<Film> getDirectorSortedPopularFilms(Long directorId, String sortBy);
 
-    public Collection<Film> getPopularFilms(Integer count) {
-        return filmDao.getPopularFilms(count);
-    }
+    List<Film> getCommonFilms(Long userId, Long friendId);
 
-    public void putLike(long filmId, long userId) {
-        filmDao.addLike(filmId, userId);
-    }
+    List<Film> filmSearch(String query, String searchBy);
 
-    public void deleteLike(long filmId, long userId) {
-        filmDao.deleteLike(filmId, userId);
-    }
-
+    List<Film> getRecommendations(Long id);
 
 }

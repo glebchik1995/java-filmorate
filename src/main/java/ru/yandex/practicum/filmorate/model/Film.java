@@ -1,41 +1,57 @@
 package ru.yandex.practicum.filmorate.model;
 
 import lombok.*;
+import org.hibernate.validator.constraints.Length;
+import ru.yandex.practicum.filmorate.util.After;
 
 import javax.validation.constraints.*;
 import java.time.LocalDate;
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
 
 @Getter
 @Setter
 @Builder
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode
 public class Film {
 
-    @EqualsAndHashCode.Exclude
-    @NotNull(message = "!= null")
-    private long id;
+    @PositiveOrZero
+    private Long id;
 
-    @NotBlank(message = "name symbol > 0")
+    @NotBlank
+    @Size(min = 1, max = 40)
     private String name;
 
-    @Size(max = 200, message = "size < 400")
+    @Size(min = 1, max = 200)
+    @NotBlank
     private String description;
 
-    @NotNull(message = "!= null")
+    @After("1895-12-28")
     private LocalDate releaseDate;
 
-    @Positive(message = "id >= 0")
-    private long duration;
+    @Positive
+    private Long duration;
 
-    @NotNull
+    private final List<Genre> genres = new ArrayList<>();
+
+    private final List<Director> directors = new ArrayList<>();
+
     private MpaRating mpa;
 
-    private Set<Long> likes = new HashSet<>();
 
-    private List<Genre> genres;
+    public Map<String, Object> toMap() {
+        Map<String, Object> values = new HashMap<>();
+        values.put("name", name);
+        values.put("description", description);
+        values.put("release_date", releaseDate);
+        values.put("duration", duration);
+        values.put("rating_id", mpa.getId());
+        return values;
+    }
 
 }

@@ -1,61 +1,29 @@
 package ru.yandex.practicum.filmorate.service;
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
+import ru.yandex.practicum.filmorate.model.Event;
 import ru.yandex.practicum.filmorate.model.User;
-import ru.yandex.practicum.filmorate.storage.dao.UserDao;
 
-import java.util.*;
+import java.util.List;
 
-@Service
-@RequiredArgsConstructor
-public class UserService implements UserDao {
+ public interface UserService {
 
-    private final UserDao userDao;
+     List<User> findAllUsers();
 
-    @Override
-    public User addUser(User user) {
-        return userDao.addUser(user);
-    }
+     User createUser(User user);
 
-    @Override
-    public User updateUser(User user) {
-        return userDao.updateUser(user);
-    }
+     User updateUser(User user);
 
-    @Override
-    public List<User> getAllUsers() {
-        return userDao.getAllUsers();
-    }
+     User getUserById(Long id);
 
-    @Override
-    public User getUserById(long userId) {
-        return userDao.getUserById(userId);
-    }
+     User addFriend(Long userId, Long friendId);
 
-    @Override
-    public void deleteUserById(long userId) {
-        userDao.deleteUserById(userId);
-    }
+     User unfriend(Long userId, Long friendId);
 
-    @Override
-    public List<User> getFriendById(long friendId) {
-        return userDao.getFriendById(friendId);
-    }
+     List<User> getAllUserFriends(Long userId);
 
-    @Override
-    public void deleteFriend(long userId, long friendId) {
-        userDao.deleteFriend(userId, friendId);
-    }
+     List<User> getCommonFriends(Long userId, Long targetId);
 
-    @Override
-    public List<User> getMutualFriends(long userId, long otherId) {
-        return userDao.getMutualFriends(userId, otherId);
-    }
+     void deleteUserById(Long userId);
 
-    @Override
-    public void addFriend(long id, long friendId) {
-        userDao.addFriend(id, friendId);
-    }
-
-}
+     List<Event> getFeed(Long userId);
+ }
