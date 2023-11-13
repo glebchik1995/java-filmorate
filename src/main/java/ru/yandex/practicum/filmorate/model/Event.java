@@ -38,7 +38,6 @@ public class Event {
         this.userId = userId;
         this.eventType = eventType.toString();
         this.operation = operation.toString();
-//        this.eventId = null;
         this.entityId = entityId;
     }
 

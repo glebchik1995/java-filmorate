@@ -37,12 +37,11 @@ public class Film {
     @Positive
     private Long duration;
 
-    private final List<Genre> genres = new ArrayList<>();
-
-    private final List<Director> directors = new ArrayList<>();
-
     private MpaRating mpa;
 
+    private List<Genre> genres = new ArrayList<>();
+
+    private final List<Director> directors = new ArrayList<>();
 
     public Map<String, Object> toMap() {
         Map<String, Object> values = new HashMap<>();
@@ -54,4 +53,12 @@ public class Film {
         return values;
     }
 
+    public Film(Long id, String name, String description, LocalDate releaseDate, Long duration, MpaRating mpa) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.releaseDate = releaseDate;
+        this.duration = duration;
+        this.mpa = mpa;
+    }
 }
